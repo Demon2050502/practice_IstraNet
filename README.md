@@ -162,7 +162,7 @@ practice_IstraNet/
 ```
 Обычно ```"message"``` добавляю на классических местах, где могу произойти ошибки, чтобы ввывести пользователю её.
 
-### Какие эндпойнты будут
+## Какие эндпойнты будут
 
 - Для авторизации пользователя ```POST /api/auth/sign-in``` ```POST /api/auth/sign-up```
 - Личный кабинет 
@@ -206,3 +206,32 @@ practice_IstraNet/
   - ```POST /api/admin/dictionaries/create-status``` # создание нового статуса заявки
   - ```PUT /api/admin/dictionaries/change-status``` # изменение статуса заявки
   - ```DELETE /api/admin/dictionaries/delete-status``` # удаление статуса
+
+
+### Все API будут передавать токен для проверки прав, чтобы пользователь не смог поменять от лица админа и оператора
+
+### Пример для получение всех заявок пользователя
+
+```GET /api/user/applications/get-apps```
+
+#### Запрос
+```
+{
+  "token": "jwt-token"
+}
+```
+#### Ответ
+```
+{
+ "applications": [
+    {
+      "id": 42,
+      "title": "Нет интернета",
+      "status": "in_progress",
+      "created_at": "2026-01-22T12:30:00Z",
+      "updated_at": "2026-01-22T13:10:00Z"
+    },
+    ...
+ ]
+}
+```
