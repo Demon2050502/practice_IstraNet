@@ -12,7 +12,8 @@ import (
 	"github.com/spf13/viper"
 
 	handler "practice_IstraNet/pkg/handler"
-	mp "practice_IstraNet/pkg/handler/main_paths"
+	repos "practice_IstraNet/pkg/repository"
+	service "practice_IstraNet/pkg/service"
 	postgres "practice_IstraNet/postgres"
 	server "practice_IstraNet/server"
 )
@@ -40,8 +41,9 @@ func main() {
 		logrus.Fatalf("failed to init DB: %s", err.Error())
 	}
 
-	main_paths := mp.NewMainPaths(db)
-	handlers := handler.NewHandler(main_paths, db)
+	repos := repos.NewRepository(db)
+	services := service.NewService(repos)
+	handlers := handler.NewHandler(services)
 	
 	srv := new(server.Server)
 	go func () {
