@@ -101,7 +101,7 @@ practice_IstraNet/
 │ ├── migrations/ # SQL-миграции БД
 │ │
 │ ├── pkg/
-│ │ ├── auxiliary_paths/ # Вспомогательные функции (JWT, middleware, утилиты)
+│ │ ├── db_model / # Модели данных для БД
 │ │ │
 │ │ ├── dto/ # DTO-структуры для запросов/ответов API
 │ │ │

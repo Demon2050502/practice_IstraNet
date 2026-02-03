@@ -14,7 +14,6 @@ import (
 	handler "practice_IstraNet/pkg/handler"
 	repos "practice_IstraNet/pkg/repository"
 	service "practice_IstraNet/pkg/service"
-	postgres "practice_IstraNet/postgres"
 	server "practice_IstraNet/server"
 )
 
@@ -29,7 +28,7 @@ func main() {
 		logrus.Fatalf("error loading env variable: %s", err.Error())
 	}
 
-	db, err := postgres.NewPostgresDB(postgres.Config{
+	db, err := repos.NewPostgresDB(repos.Config{
 		Host: viper.GetString("db.host"),
 		Port: viper.GetString("db.port"),
 		Username: viper.GetString("db.username"),
