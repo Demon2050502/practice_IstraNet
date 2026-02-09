@@ -14,13 +14,28 @@ type Authorization interface{
 	GetUserRoleCode(ctx context.Context, userID int64) (string, error)
 }
 
+type Applications interface {
+	CreateApplication(
+		ctx context.Context,
+		createdBy int64,
+		title, description string,
+		priorityCode string,
+		categoryID *int64,
+		contactPhone, contactAddress *string,
+	) (dbmodel.ApplicationDB, error)
+
+	GetAllApplications(ctx context.Context) ([]dbmodel.ApplicationDB, error)
+}
+
 
 type Repository struct {
 	Authorization
+	Applications
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
+		Applications:  NewApplicationPostgres(db),
 	}
 }

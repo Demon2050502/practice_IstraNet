@@ -13,12 +13,19 @@ type Authorization interface{
 	GenerateJWT(userID int64, name, role string) (string, error)
 }
 
+type Applications interface {
+	CreateApplication(ctx context.Context, userID int64, in dto.CreateApplicationRequest) (dto.ApplicationResponse, error)
+	GetAllApplications(ctx context.Context) (dto.ApplicationsListResponse, error)
+}
+
 type Service struct {
 	Authorization
+	Applications
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
+		Applications:  NewApplicationService(repos.Applications),
 	}
 }

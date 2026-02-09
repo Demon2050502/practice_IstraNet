@@ -21,8 +21,6 @@ func (h *Handler) SignUp(c *gin.Context) {
         switch err {
         case repository.ErrUserExists:
             writeErr(c, http.StatusConflict, "conflict", "пользователь с таким email уже существует")
-        case repository.ErrRoleNotFound:
-            writeErr(c, http.StatusBadRequest, "validation_error", "неизвестная роль")
         default:
             writeErr(c, http.StatusInternalServerError, "internal_error", "внутренняя ошибка")
         }

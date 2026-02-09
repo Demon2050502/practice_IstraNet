@@ -25,6 +25,12 @@ func (h *Handler)InitRoutes() *gin.Engine {
 		auth.POST("/sign-in", h.SignIn)
 	}
 
+	apps := router.Group("/applications", h.userIdentity())
+	{
+		apps.POST("/create-app", h.CreateApplication) // role=user
+		apps.GET("/get-all-apps", h.GetAllApplications) // role=operator/admin
+	}
+
 	test := router.Group("/test")
 	{
 		test.POST("/status", responce)

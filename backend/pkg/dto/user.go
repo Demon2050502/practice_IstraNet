@@ -15,7 +15,6 @@ type SignInRequest struct {
 }
 
 type AuthUser struct {
-    ID   int64  `json:"id"`
     Name string `json:"name"`
     Role string `json:"role"`
 }

@@ -40,7 +40,6 @@ func (s *AuthService) SignUp(ctx context.Context, in dto.SignUpRequest) (dto.Aut
 	return dto.AuthResponse{
 		Token: token,
 		User: dto.AuthUser{
-			ID:   userID,
 			Name: in.FullName,
 			Role: role,
 		},
@@ -70,7 +69,6 @@ func (s *AuthService) SignIn(ctx context.Context, in dto.SignInRequest) (dto.Aut
 	return dto.AuthResponse{
 		Token: token,
 		User: dto.AuthUser{
-			ID:   u.ID,
 			Name: u.FullName,
 			Role: role,
 		},
