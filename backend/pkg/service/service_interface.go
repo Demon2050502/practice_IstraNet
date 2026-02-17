@@ -16,6 +16,11 @@ type Authorization interface{
 type Applications interface {
 	CreateApplication(ctx context.Context, userID int64, in dto.CreateApplicationRequest) (dto.ApplicationResponse, error)
 	GetAllApplications(ctx context.Context) (dto.ApplicationsListResponse, error)
+
+	GetUserApplications(ctx context.Context, userID int64) (dto.UserAppsResponse, error)
+	GetUserApplicationByID(ctx context.Context, userID, appID int64) (dto.UserAppDetailsResponse, error)
+	DeleteUserApplication(ctx context.Context, userID, appID int64) error
+	UpdateUserApplication(ctx context.Context, userID int64, in dto.ChangeApplicationRequest) error
 }
 
 type Service struct {

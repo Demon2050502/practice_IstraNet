@@ -108,8 +108,4 @@ func getRole(c *gin.Context) (string, bool) {
 	s, ok := v.(string)
 	return s, ok
 }
-
-// чтобы компилятор не ругался, что dto импорт не используется,
-// если у тебя writeErr лежит в auth.go и dto там уже подключен — можешь удалить dto импорт здесь.
-// Оставил как подсказку: ErrorResponse у тебя в dto.
 var _ = dto.ErrorResponse{}
