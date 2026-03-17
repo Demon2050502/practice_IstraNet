@@ -21,6 +21,11 @@ type Applications interface {
 	GetUserApplicationByID(ctx context.Context, userID, appID int64) (dto.UserAppDetailsResponse, error)
 	DeleteUserApplication(ctx context.Context, userID, appID int64) error
 	UpdateUserApplication(ctx context.Context, userID int64, in dto.ChangeApplicationRequest) error
+	GetOperatorApplicationByID(ctx context.Context, appID int64) (dto.UserAppDetailsResponse, error)
+	GetApplicationHistory(ctx context.Context, appID int64) (dto.ApplicationHistoryResponse, error)
+	TakeApplication(ctx context.Context, operatorID, appID int64) error
+	ChangeApplicationStatus(ctx context.Context, operatorID int64, in dto.ChangeStatusRequest) error
+	CloseApplication(ctx context.Context, operatorID int64, in dto.CloseApplicationRequest) error
 }
 
 type Service struct {

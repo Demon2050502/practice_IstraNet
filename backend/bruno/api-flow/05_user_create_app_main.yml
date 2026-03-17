@@ -1,0 +1,75 @@
+info:
+  name: "05 User Create App Main"
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{baseUrl}}/applications/create-app"
+  auth:
+    type: bearer
+    token: "{{userToken}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "title": "{{mainTitle}}",
+        "description": "{{mainDescription}}",
+        "priority_code": "high",
+        "contact_phone": "{{contactPhone}}",
+        "contact_address": "{{contactAddress}}"
+      }
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        if (res.status === 200 && res.body && typeof res.body.id === "number") {
+          bru.setVar("mainAppId", res.body.id);
+          bru.setEnvVar("mainAppId", String(res.body.id));
+        }
+    - type: tests
+      code: |-
+        function expectPositiveNumber(value, field) {
+          expect(value, `${field} should be a number`).to.be.a("number");
+          expect(value, `${field} should be positive`).to.be.greaterThan(0);
+        }
+
+        function expectIsoDate(value, field) {
+          expect(value, `${field} should be a string`).to.be.a("string");
+          expect(Number.isNaN(Date.parse(value)), `${field} should be a valid ISO date`).to.equal(false);
+        }
+
+        test("create main app returns application contract", function() {
+          const body = res.body;
+          expect(res.status).to.equal(200);
+          expect(body).to.be.an("object");
+          expectPositiveNumber(body.id, "id");
+          expect(body.title).to.equal(bru.getEnvVar("mainTitle"));
+          expect(body.description).to.equal(bru.getEnvVar("mainDescription"));
+          expect(body.status).to.be.an("object");
+          expect(body.status.code).to.equal("new");
+          expect(body.status.name).to.be.a("string");
+          expect(body.priority).to.be.an("object");
+          expect(body.priority.code).to.equal("high");
+          expect(body.priority.name).to.be.a("string");
+          expect(body.priority.weight).to.be.a("number");
+          expect(body.created_by).to.be.an("object");
+          expectPositiveNumber(body.created_by.id, "created_by.id");
+          expect(body.created_by.name).to.equal(bru.getEnvVar("userFullName"));
+          expect(body.assigned_to === null || typeof body.assigned_to === "undefined").to.equal(true);
+          expect(body.contact_phone).to.equal(bru.getEnvVar("contactPhone"));
+          expect(body.contact_address).to.equal(bru.getEnvVar("contactAddress"));
+          expectIsoDate(body.created_at, "created_at");
+          expectIsoDate(body.updated_at, "updated_at");
+          expect(body.closed_at === null || typeof body.closed_at === "undefined").to.equal(true);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

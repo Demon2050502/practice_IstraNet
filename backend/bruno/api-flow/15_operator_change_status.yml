@@ -1,0 +1,38 @@
+info:
+  name: "15 Operator Change Status"
+  type: http
+  seq: 15
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/api/operator/applications/change-status"
+  auth:
+    type: bearer
+    token: "{{operatorToken}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "id": {{mainAppId}},
+        "status_code": "resolved",
+        "comment": "{{operatorResolveComment}}"
+      }
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("operator can resolve application", function() {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an("object");
+          expect(res.body.result).to.equal("status_changed");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

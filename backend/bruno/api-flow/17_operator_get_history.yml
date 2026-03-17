@@ -1,0 +1,87 @@
+info:
+  name: "17 Operator Get History"
+  type: http
+  seq: 17
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/operator/applications/get-history?id={{mainAppId}}"
+  auth:
+    type: bearer
+    token: "{{operatorToken}}"
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        function expectPositiveNumber(value, field) {
+          expect(value, `${field} should be a number`).to.be.a("number");
+          expect(value, `${field} should be positive`).to.be.greaterThan(0);
+        }
+
+        function expectIsoDate(value, field) {
+          expect(value, `${field} should be a string`).to.be.a("string");
+          expect(Number.isNaN(Date.parse(value)), `${field} should be a valid ISO date`).to.equal(false);
+        }
+
+        function findIndex(items, predicate, startIndex) {
+          for (let index = startIndex; index < items.length; index += 1) {
+            if (predicate(items[index])) {
+              return index;
+            }
+          }
+          return -1;
+        }
+
+        test("history contains the full lifecycle in order", function() {
+          const body = res.body;
+          expect(res.status).to.equal(200);
+          expect(body).to.be.an("object");
+          expect(body.items).to.be.an("array");
+          expect(body.items.length).to.be.at.least(10);
+
+          body.items.forEach((item, index) => {
+            expect(item, `history item ${index} should be an object`).to.be.an("object");
+            expectPositiveNumber(item.id, `items[${index}].id`);
+            expect(item.action, `items[${index}].action`).to.be.a("string");
+            expect(item.actor, `items[${index}].actor`).to.be.an("object");
+            expectPositiveNumber(item.actor.id, `items[${index}].actor.id`);
+            expect(item.actor.name, `items[${index}].actor.name`).to.be.a("string");
+            expectIsoDate(item.created_at, `items[${index}].created_at`);
+          });
+
+          const items = body.items;
+          const userName = bru.getEnvVar("userFullName");
+          const operatorName = bru.getEnvVar("operatorFullName");
+          const userEditComment = bru.getEnvVar("userEditComment");
+          const operatorResolveComment = bru.getEnvVar("operatorResolveComment");
+          const operatorCloseComment = bru.getEnvVar("operatorCloseComment");
+
+          const createIndex = findIndex(items, (item) => item.action === "create" && item.actor.name === userName, 0);
+          const titleEditIndex = findIndex(items, (item) => item.action === "edit" && item.field === "title" && item.new_value === bru.getEnvVar("updatedTitle") && item.actor.name === userName, createIndex + 1);
+          const descriptionEditIndex = findIndex(items, (item) => item.action === "edit" && item.field === "description" && item.new_value === bru.getEnvVar("updatedDescription") && item.actor.name === userName, titleEditIndex + 1);
+          const userCommentIndex = findIndex(items, (item) => item.action === "comment" && item.new_value === userEditComment && item.actor.name === userName, descriptionEditIndex + 1);
+          const assignIndex = findIndex(items, (item) => item.action === "assign" && item.field === "assigned_to" && item.actor.name === operatorName, userCommentIndex + 1);
+          const takeStatusIndex = findIndex(items, (item) => item.action === "status_change" && item.field === "status_id" && item.old_value === "new" && item.new_value === "in_progress" && item.actor.name === operatorName, assignIndex + 1);
+          const resolveStatusIndex = findIndex(items, (item) => item.action === "status_change" && item.field === "status_id" && item.old_value === "in_progress" && item.new_value === "resolved" && item.actor.name === operatorName, takeStatusIndex + 1);
+          const resolveCommentIndex = findIndex(items, (item) => item.action === "comment" && item.new_value === operatorResolveComment && item.actor.name === operatorName, resolveStatusIndex + 1);
+          const closeIndex = findIndex(items, (item) => item.action === "close" && item.field === "status_id" && item.old_value === "resolved" && item.new_value === "closed" && item.actor.name === operatorName, resolveCommentIndex + 1);
+          const closeCommentIndex = findIndex(items, (item) => item.action === "comment" && item.new_value === operatorCloseComment && item.actor.name === operatorName, closeIndex + 1);
+
+          expect(createIndex, "create history item should exist").to.be.at.least(0);
+          expect(titleEditIndex, "title edit history item should exist").to.be.greaterThan(createIndex);
+          expect(descriptionEditIndex, "description edit history item should exist").to.be.greaterThan(titleEditIndex);
+          expect(userCommentIndex, "user comment history item should exist").to.be.greaterThan(descriptionEditIndex);
+          expect(assignIndex, "assign history item should exist").to.be.greaterThan(userCommentIndex);
+          expect(takeStatusIndex, "take status history item should exist").to.be.greaterThan(assignIndex);
+          expect(resolveStatusIndex, "resolve status history item should exist").to.be.greaterThan(takeStatusIndex);
+          expect(resolveCommentIndex, "resolve comment history item should exist").to.be.greaterThan(resolveStatusIndex);
+          expect(closeIndex, "close history item should exist").to.be.greaterThan(resolveCommentIndex);
+          expect(closeCommentIndex, "close comment history item should exist").to.be.greaterThan(closeIndex);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

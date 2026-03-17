@@ -1,0 +1,42 @@
+info:
+  name: "12 Operator Get Apps"
+  type: http
+  seq: 12
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/operator/applications/get-apps"
+  auth:
+    type: bearer
+    token: "{{operatorToken}}"
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        function findById(items, id) {
+          return items.find((item) => item.id === id);
+        }
+
+        test("operator scoped list returns the current app", function() {
+          const body = res.body;
+          const mainAppId = bru.getVar("mainAppId");
+
+          expect(res.status).to.equal(200);
+          expect(body).to.be.an("object");
+          expect(body.items).to.be.an("array");
+
+          const mainItem = findById(body.items, mainAppId);
+          expect(mainItem, "main app should be present in operator list").to.be.an("object");
+          expect(mainItem.title).to.equal(bru.getEnvVar("updatedTitle"));
+          expect(mainItem.description).to.equal(bru.getEnvVar("updatedDescription"));
+          expect(mainItem.status.code).to.equal("new");
+          expect(mainItem.priority.code).to.equal("high");
+          expect(mainItem.created_by.name).to.equal(bru.getEnvVar("userFullName"));
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

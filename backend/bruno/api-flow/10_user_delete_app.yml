@@ -1,0 +1,36 @@
+info:
+  name: "10 User Delete App"
+  type: http
+  seq: 10
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/applications/delete-app"
+  auth:
+    type: bearer
+    token: "{{userToken}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "id": {{deleteAppId}}
+      }
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("user delete app returns deleted marker", function() {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an("object");
+          expect(res.body.result).to.equal("deleted");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -25,12 +25,17 @@ type Applications interface {
 		contactPhone, contactAddress *string,
 	) (dbmodel.ApplicationDB, error)
 	GetAllApplications(ctx context.Context) ([]dbmodel.ApplicationDB, error)
+	GetApplicationByID(ctx context.Context, appID int64) (dbmodel.ApplicationDB, error)
 
 	DeleteUserApplication(ctx context.Context, userID, appID int64) error
-    GetUserApplications(ctx context.Context, userID int64) ([]dbmodel.ApplicationDB, error)
-    GetUserApplicationByID(ctx context.Context, userID, appID int64) (dbmodel.ApplicationDB, error)
-    UpdateUserApplication(ctx context.Context, userID int64, in dto.ChangeApplicationRequest) error
-    GetApplicationComments(ctx context.Context, appID int64) ([]dbmodel.ApplicationCommentDB, error)
+	GetUserApplications(ctx context.Context, userID int64) ([]dbmodel.ApplicationDB, error)
+	GetUserApplicationByID(ctx context.Context, userID, appID int64) (dbmodel.ApplicationDB, error)
+	UpdateUserApplication(ctx context.Context, userID int64, in dto.ChangeApplicationRequest) error
+	GetApplicationComments(ctx context.Context, appID int64) ([]dbmodel.ApplicationCommentDB, error)
+	GetApplicationHistory(ctx context.Context, appID int64) ([]dbmodel.ApplicationHistoryDB, error)
+	TakeApplication(ctx context.Context, operatorID, appID int64) error
+	ChangeApplicationStatus(ctx context.Context, operatorID int64, in dto.ChangeStatusRequest) error
+	CloseApplication(ctx context.Context, operatorID int64, in dto.CloseApplicationRequest) error
 
 }
 

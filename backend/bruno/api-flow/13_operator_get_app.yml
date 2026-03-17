@@ -1,0 +1,45 @@
+info:
+  name: "13 Operator Get App"
+  type: http
+  seq: 13
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/operator/applications/get-app?id={{mainAppId}}"
+  auth:
+    type: bearer
+    token: "{{operatorToken}}"
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        function findComment(comments, author, body) {
+          return comments.find((item) => item.author === author && item.body === body);
+        }
+
+        test("operator get app returns updated data and user comment", function() {
+          const payload = res.body;
+          const comments = Array.isArray(payload.comments) ? payload.comments : [];
+
+          expect(res.status).to.equal(200);
+          expect(payload).to.be.an("object");
+          expect(payload.id).to.equal(bru.getVar("mainAppId"));
+          expect(payload.title).to.equal(bru.getEnvVar("updatedTitle"));
+          expect(payload.description).to.equal(bru.getEnvVar("updatedDescription"));
+          expect(payload.status.code).to.equal("new");
+          expect(payload.priority.code).to.equal("high");
+          expect(payload.created_by.name).to.equal(bru.getEnvVar("userFullName"));
+          expect(payload.assigned_to === null || typeof payload.assigned_to === "undefined").to.equal(true);
+
+          const userComment = findComment(comments, bru.getEnvVar("userFullName"), bru.getEnvVar("userEditComment"));
+          expect(userComment, "user comment should be visible to operator").to.be.an("object");
+          expect(userComment.id).to.be.a("number");
+          expect(userComment.created_at).to.be.a("string");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

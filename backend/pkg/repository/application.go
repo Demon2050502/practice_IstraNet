@@ -37,7 +37,6 @@ func (r *ApplicationPostgres) CreateApplication(
 		priorityCode = "normal"
 	}
 
-	// 1) получить status_id для "new"
 	var statusID int16
 	if err := r.db.GetContext(ctx, &statusID, `SELECT id FROM application_statuses WHERE code='new'`); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -46,7 +45,6 @@ func (r *ApplicationPostgres) CreateApplication(
 		return dbmodel.ApplicationDB{}, err
 	}
 
-	// 2) получить priority_id по коду
 	var priorityID int16
 	if err := r.db.GetContext(ctx, &priorityID, `SELECT id FROM application_priorities WHERE code=$1`, priorityCode); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -55,7 +53,6 @@ func (r *ApplicationPostgres) CreateApplication(
 		return dbmodel.ApplicationDB{}, err
 	}
 
-	// 3) проверить category_id (если передан)
 	if categoryID != nil {
 		var exists bool
 		if err := r.db.GetContext(ctx, &exists, `SELECT EXISTS(SELECT 1 FROM application_categories WHERE id=$1)`, *categoryID); err != nil {
@@ -66,20 +63,39 @@ func (r *ApplicationPostgres) CreateApplication(
 		}
 	}
 
-	// 4) insert application и вернуть расширенную модель через JOIN
+	tx, err := r.db.BeginTxx(ctx, nil)
+	if err != nil {
+		return dbmodel.ApplicationDB{}, err
+	}
+	defer func() {
+		if err != nil {
+			_ = tx.Rollback()
+		}
+	}()
+
 	var appID int64
 	qIns := `
 		INSERT INTO applications (title, description, status_id, priority_id, category_id, created_by, contact_phone, contact_address)
 		VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
 		RETURNING id
 	`
-	if err := r.db.QueryRowContext(ctx, qIns,
+	if err = tx.QueryRowContext(ctx, qIns,
 		title, description, statusID, priorityID, categoryID, createdBy, contactPhone, contactAddress,
 	).Scan(&appID); err != nil {
 		return dbmodel.ApplicationDB{}, err
 	}
 
-	// 5) получить объект для ответа
+	if _, err = tx.ExecContext(ctx, `
+		INSERT INTO application_history(application_id, actor_id, action)
+		VALUES ($1, $2, 'create')
+	`, appID, createdBy); err != nil {
+		return dbmodel.ApplicationDB{}, err
+	}
+
+	if err = tx.Commit(); err != nil {
+		return dbmodel.ApplicationDB{}, err
+	}
+
 	return r.getApplicationByID(ctx, appID)
 }
 
@@ -89,19 +105,14 @@ func (r *ApplicationPostgres) GetAllApplications(ctx context.Context) ([]dbmodel
 	q := `
 		SELECT
 			a.id, a.title, a.description,
-
 			s.code AS status_code, s.name AS status_name,
 			p.code AS priority_code, p.name AS priority_name, p.weight AS priority_weight,
-
 			a.category_id,
 			c.name AS category_name,
-
 			u.id AS created_by_id,
 			u.full_name AS created_by_name,
-
 			a.assigned_to AS assigned_to_id,
 			au.full_name AS assigned_to_name,
-
 			a.contact_phone, a.contact_address,
 			a.created_at, a.updated_at, a.closed_at
 		FROM applications a
@@ -126,19 +137,14 @@ func (r *ApplicationPostgres) getApplicationByID(ctx context.Context, id int64) 
 	q := `
 		SELECT
 			a.id, a.title, a.description,
-
 			s.code AS status_code, s.name AS status_name,
 			p.code AS priority_code, p.name AS priority_name, p.weight AS priority_weight,
-
 			a.category_id,
 			c.name AS category_name,
-
 			u.id AS created_by_id,
 			u.full_name AS created_by_name,
-
 			a.assigned_to AS assigned_to_id,
 			au.full_name AS assigned_to_name,
-
 			a.contact_phone, a.contact_address,
 			a.created_at, a.updated_at, a.closed_at
 		FROM applications a
@@ -151,8 +157,15 @@ func (r *ApplicationPostgres) getApplicationByID(ctx context.Context, id int64) 
 	`
 
 	if err := r.db.GetContext(ctx, &a, q, id); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return dbmodel.ApplicationDB{}, ErrAppNotFound
+		}
 		return dbmodel.ApplicationDB{}, err
 	}
 
 	return a, nil
+}
+
+func (r *ApplicationPostgres) GetApplicationByID(ctx context.Context, appID int64) (dbmodel.ApplicationDB, error) {
+	return r.getApplicationByID(ctx, appID)
 }

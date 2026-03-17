@@ -1,0 +1,77 @@
+info:
+  name: "01 Auth Sign Up User"
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/auth/sign-up"
+  auth: none
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "email": "{{userEmail}}",
+        "password": "{{userPassword}}",
+        "full_name": "{{userFullName}}",
+        "role": "user"
+      }
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        const runId = `${Date.now()}-${Math.floor(Math.random() * 100000)}`;
+        const vars = {
+          runId,
+          userEmail: `${bru.getEnvVar("userEmailPrefix") || "bruno_user"}+${runId}@example.com`,
+          operatorEmail: `${bru.getEnvVar("operatorEmailPrefix") || "bruno_operator"}+${runId}@example.com`,
+          userFullName: `${bru.getEnvVar("userNamePrefix") || "Bruno User"} ${runId}`,
+          operatorFullName: `${bru.getEnvVar("operatorNamePrefix") || "Bruno Operator"} ${runId}`,
+          mainTitle: `Bruno main application ${runId}`,
+          updatedTitle: `Bruno updated application ${runId}`,
+          mainDescription: `Main application description ${runId}`,
+          updatedDescription: `Updated application description ${runId}`,
+          deleteTitle: `Bruno delete application ${runId}`,
+          deleteDescription: `Delete application description ${runId}`,
+          contactPhone: "+7-900-123-45-67",
+          contactAddress: `Moscow, Bruno lane ${runId}`,
+          userEditComment: `User edit comment ${runId}`,
+          operatorResolveComment: `Operator resolve comment ${runId}`,
+          operatorCloseComment: `Operator close comment ${runId}`
+        };
+
+        Object.entries(vars).forEach(([key, value]) => {
+          bru.setVar(key, value);
+          bru.setEnvVar(key, value);
+        });
+
+        bru.setVar("userToken", "");
+        bru.setVar("operatorToken", "");
+        bru.setVar("mainAppId", 0);
+        bru.setVar("deleteAppId", 0);
+        bru.setEnvVar("userToken", "");
+        bru.setEnvVar("operatorToken", "");
+        bru.setEnvVar("mainAppId", "0");
+        bru.setEnvVar("deleteAppId", "0");
+    - type: tests
+      code: |-
+        test("sign-up user returns auth payload", function() {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an("object");
+          expect(res.body.token).to.be.a("string");
+          expect(res.body.token.trim()).to.not.equal("");
+          expect(res.body.token.split(".")).to.have.length(3);
+          expect(res.body.user).to.be.an("object");
+          expect(res.body.user.name).to.equal(bru.getEnvVar("userFullName"));
+          expect(res.body.user.role).to.equal("user");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

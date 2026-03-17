@@ -25,6 +25,9 @@ db-restart: db-stop db-start
 migrate-up:
 	migrate -path $(MIGRATIONS_PATH) -database "$(DATABASE_URL)" up
 
+migrate-down:
+	migrate -path $(MIGRATIONS_PATH) -database "$(DATABASE_URL)" down
+
 run:
 	go run cmd/main.go
 

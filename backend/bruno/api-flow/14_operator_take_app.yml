@@ -1,0 +1,36 @@
+info:
+  name: "14 Operator Take App"
+  type: http
+  seq: 14
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/api/operator/applications/take-app"
+  auth:
+    type: bearer
+    token: "{{operatorToken}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "id": {{mainAppId}}
+      }
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("operator can take application", function() {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an("object");
+          expect(res.body.result).to.equal("taken");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

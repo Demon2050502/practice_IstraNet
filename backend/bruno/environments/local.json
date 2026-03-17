@@ -1,0 +1,140 @@
+{
+  "name": "local",
+  "variables": [
+    {
+      "name": "baseUrl",
+      "value": "http://localhost:8000",
+      "enabled": true
+    },
+    {
+      "name": "userPassword",
+      "value": "Qwerty123!",
+      "enabled": true
+    },
+    {
+      "name": "operatorPassword",
+      "value": "Qwerty123!",
+      "enabled": true
+    },
+    {
+      "name": "userEmailPrefix",
+      "value": "bruno_user",
+      "enabled": true
+    },
+    {
+      "name": "operatorEmailPrefix",
+      "value": "bruno_operator",
+      "enabled": true
+    },
+    {
+      "name": "userNamePrefix",
+      "value": "Bruno User",
+      "enabled": true
+    },
+    {
+      "name": "operatorNamePrefix",
+      "value": "Bruno Operator",
+      "enabled": true
+    },
+    {
+      "name": "runId",
+      "value": "manual-local",
+      "enabled": true
+    },
+    {
+      "name": "userEmail",
+      "value": "bruno_user+manual-local@example.com",
+      "enabled": true
+    },
+    {
+      "name": "operatorEmail",
+      "value": "bruno_operator+manual-local@example.com",
+      "enabled": true
+    },
+    {
+      "name": "userFullName",
+      "value": "Bruno User manual-local",
+      "enabled": true
+    },
+    {
+      "name": "operatorFullName",
+      "value": "Bruno Operator manual-local",
+      "enabled": true
+    },
+    {
+      "name": "userToken",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "name": "operatorToken",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "name": "mainAppId",
+      "value": "0",
+      "enabled": true
+    },
+    {
+      "name": "deleteAppId",
+      "value": "0",
+      "enabled": true
+    },
+    {
+      "name": "mainTitle",
+      "value": "Bruno main application manual-local",
+      "enabled": true
+    },
+    {
+      "name": "updatedTitle",
+      "value": "Bruno updated application manual-local",
+      "enabled": true
+    },
+    {
+      "name": "mainDescription",
+      "value": "Main application description manual-local",
+      "enabled": true
+    },
+    {
+      "name": "updatedDescription",
+      "value": "Updated application description manual-local",
+      "enabled": true
+    },
+    {
+      "name": "deleteTitle",
+      "value": "Bruno delete application manual-local",
+      "enabled": true
+    },
+    {
+      "name": "deleteDescription",
+      "value": "Delete application description manual-local",
+      "enabled": true
+    },
+    {
+      "name": "contactPhone",
+      "value": "+7-900-123-45-67",
+      "enabled": true
+    },
+    {
+      "name": "contactAddress",
+      "value": "Moscow, Bruno lane manual-local",
+      "enabled": true
+    },
+    {
+      "name": "userEditComment",
+      "value": "User edit comment manual-local",
+      "enabled": true
+    },
+    {
+      "name": "operatorResolveComment",
+      "value": "Operator resolve comment manual-local",
+      "enabled": true
+    },
+    {
+      "name": "operatorCloseComment",
+      "value": "Operator close comment manual-local",
+      "enabled": true
+    }
+  ]
+}

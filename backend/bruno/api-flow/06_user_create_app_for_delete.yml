@@ -1,0 +1,54 @@
+info:
+  name: "06 User Create App For Delete"
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{baseUrl}}/applications/create-app"
+  auth:
+    type: bearer
+    token: "{{userToken}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "title": "{{deleteTitle}}",
+        "description": "{{deleteDescription}}",
+        "priority_code": "low"
+      }
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        if (res.status === 200 && res.body && typeof res.body.id === "number") {
+          bru.setVar("deleteAppId", res.body.id);
+          bru.setEnvVar("deleteAppId", String(res.body.id));
+        }
+    - type: tests
+      code: |-
+        function expectPositiveNumber(value, field) {
+          expect(value, `${field} should be a number`).to.be.a("number");
+          expect(value, `${field} should be positive`).to.be.greaterThan(0);
+        }
+
+        test("create delete app returns secondary application", function() {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an("object");
+          expectPositiveNumber(res.body.id, "id");
+          expect(res.body.title).to.equal(bru.getEnvVar("deleteTitle"));
+          expect(res.body.description).to.equal(bru.getEnvVar("deleteDescription"));
+          expect(res.body.status.code).to.equal("new");
+          expect(res.body.priority.code).to.equal("low");
+          expect(res.body.created_by.name).to.equal(bru.getEnvVar("userFullName"));
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

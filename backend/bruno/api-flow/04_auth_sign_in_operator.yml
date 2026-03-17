@@ -1,0 +1,46 @@
+info:
+  name: "04 Auth Sign In Operator"
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseUrl}}/auth/sign-in"
+  auth: none
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "email": "{{operatorEmail}}",
+        "password": "{{operatorPassword}}"
+      }
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        if (res.status === 200 && res.body && res.body.token) {
+          bru.setVar("operatorToken", res.body.token);
+          bru.setEnvVar("operatorToken", res.body.token);
+        }
+    - type: tests
+      code: |-
+        test("sign-in operator returns fresh token", function() {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an("object");
+          expect(res.body.token).to.be.a("string");
+          expect(res.body.token.trim()).to.not.equal("");
+          expect(res.body.token.split(".")).to.have.length(3);
+          expect(res.body.user).to.be.an("object");
+          expect(res.body.user.name).to.equal(bru.getEnvVar("operatorFullName"));
+          expect(res.body.user.role).to.equal("operator");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
