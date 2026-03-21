@@ -1,0 +1,51 @@
+info:
+  name: "34 Admin Create Status"
+  type: http
+  seq: 34
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/admin/dictionaries/create-status"
+  auth:
+    type: bearer
+    token: "{{adminToken}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "code": "{{customStatusCode}}",
+        "name": "{{customStatusName}}",
+        "is_final": false
+      }
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        if (res.status === 200 && res.body && typeof res.body.id === "number") {
+          bru.setVar("customStatusId", res.body.id);
+          bru.setEnvVar("customStatusId", String(res.body.id));
+        }
+    - type: tests
+      code: |-
+        test("admin can create custom status", function() {
+          const body = res.body;
+
+          expect(res.status).to.equal(200);
+          expect(body).to.be.an("object");
+          expect(body.id).to.be.a("number");
+          expect(body.id).to.be.greaterThan(0);
+          expect(body.code).to.equal(bru.getEnvVar("customStatusCode"));
+          expect(body.name).to.equal(bru.getEnvVar("customStatusName"));
+          expect(body.is_final).to.equal(false);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+

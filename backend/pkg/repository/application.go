@@ -10,12 +10,6 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-var (
-	ErrPriorityNotFound = errors.New("priority not found")
-	ErrCategoryNotFound = errors.New("category not found")
-	ErrStatusNotFound   = errors.New("status not found")
-)
-
 type ApplicationPostgres struct {
 	db *sqlx.DB
 }

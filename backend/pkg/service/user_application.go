@@ -33,7 +33,7 @@ func (s *ApplicationService) GetUserApplicationByID(ctx context.Context, userID,
 
 	commentsDB, _ := s.repos.GetApplicationComments(ctx, appID)
 
-	var comments []dto.AppComment
+	comments := make([]dto.AppComment, 0, len(commentsDB))
 	for _, c := range commentsDB {
 		comments = append(comments, dto.AppComment{
 			ID:        c.ID,
@@ -57,7 +57,7 @@ func (s *ApplicationService) GetOperatorApplicationByID(ctx context.Context, app
 
 	commentsDB, _ := s.repos.GetApplicationComments(ctx, appID)
 
-	var comments []dto.AppComment
+	comments := make([]dto.AppComment, 0, len(commentsDB))
 	for _, c := range commentsDB {
 		comments = append(comments, dto.AppComment{
 			ID:        c.ID,

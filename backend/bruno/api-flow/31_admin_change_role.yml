@@ -1,0 +1,38 @@
+info:
+  name: "31 Admin Change Role"
+  type: http
+  seq: 31
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/api/admin/users/change-role"
+  auth:
+    type: bearer
+    token: "{{adminToken}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "user_id": {{managedUserId}},
+        "role_code": "operator"
+      }
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("admin can change managed user role", function() {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an("object");
+          expect(res.body.result).to.equal("role_changed");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+

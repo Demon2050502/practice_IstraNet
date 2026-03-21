@@ -1,0 +1,54 @@
+info:
+  name: "26 Admin Get History"
+  type: http
+  seq: 26
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/admin/applications/get-history?id={{adminAppId}}"
+  auth:
+    type: bearer
+    token: "{{adminToken}}"
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        function findIndex(items, predicate, startIndex) {
+          for (let index = startIndex; index < items.length; index += 1) {
+            if (predicate(items[index])) {
+              return index;
+            }
+          }
+          return -1;
+        }
+
+        test("admin history contains create assign status and comment", function() {
+          const body = res.body;
+          const items = Array.isArray(body.items) ? body.items : [];
+          const userName = bru.getEnvVar("userFullName");
+          const adminName = bru.getEnvVar("adminFullName");
+
+          expect(res.status).to.equal(200);
+          expect(body).to.be.an("object");
+          expect(items.length).to.be.at.least(4);
+
+          const createIndex = findIndex(items, (item) => item.action === "create" && item.actor.name === userName, 0);
+          const assignIndex = findIndex(items, (item) => item.action === "assign" && item.field === "assigned_to" && item.actor.name === adminName, createIndex + 1);
+          const takeStatusIndex = findIndex(items, (item) => item.action === "status_change" && item.old_value === "new" && item.new_value === "in_progress" && item.actor.name === adminName, assignIndex + 1);
+          const waitingStatusIndex = findIndex(items, (item) => item.action === "status_change" && item.old_value === "in_progress" && item.new_value === "waiting" && item.actor.name === adminName, takeStatusIndex + 1);
+          const commentIndex = findIndex(items, (item) => item.action === "comment" && item.new_value === bru.getEnvVar("adminStatusComment") && item.actor.name === adminName, waitingStatusIndex + 1);
+
+          expect(createIndex).to.be.at.least(0);
+          expect(assignIndex).to.be.greaterThan(createIndex);
+          expect(takeStatusIndex).to.be.greaterThan(assignIndex);
+          expect(waitingStatusIndex).to.be.greaterThan(takeStatusIndex);
+          expect(commentIndex).to.be.greaterThan(waitingStatusIndex);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+

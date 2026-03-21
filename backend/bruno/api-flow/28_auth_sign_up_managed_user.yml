@@ -1,0 +1,40 @@
+info:
+  name: "28 Auth Sign Up Managed User"
+  type: http
+  seq: 28
+
+http:
+  method: POST
+  url: "{{baseUrl}}/auth/sign-up"
+  auth: none
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "email": "{{managedUserEmail}}",
+        "password": "{{userPassword}}",
+        "full_name": "{{managedUserFullName}}",
+        "role": "user"
+      }
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("sign-up managed user returns auth payload", function() {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an("object");
+          expect(res.body.user).to.be.an("object");
+          expect(res.body.user.name).to.equal(bru.getEnvVar("managedUserFullName"));
+          expect(res.body.user.role).to.equal("user");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+

@@ -1,0 +1,47 @@
+info:
+  name: "22 Admin Get Apps"
+  type: http
+  seq: 22
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/admin/applications/get-apps"
+  auth:
+    type: bearer
+    token: "{{adminToken}}"
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        function findById(items, id) {
+          return items.find((item) => item.id === id);
+        }
+
+        test("admin get-apps returns closed main app and fresh admin app", function() {
+          const body = res.body;
+          const mainAppId = bru.getVar("mainAppId");
+          const adminAppId = bru.getVar("adminAppId");
+
+          expect(res.status).to.equal(200);
+          expect(body).to.be.an("object");
+          expect(body.items).to.be.an("array");
+
+          const mainItem = findById(body.items, mainAppId);
+          const adminItem = findById(body.items, adminAppId);
+
+          expect(mainItem, "main app should be visible to admin").to.be.an("object");
+          expect(adminItem, "admin app should be visible to admin").to.be.an("object");
+
+          expect(mainItem.status.code).to.equal("closed");
+          expect(adminItem.title).to.equal(bru.getEnvVar("adminAppTitle"));
+          expect(adminItem.status.code).to.equal("new");
+          expect(adminItem.assigned_to === null || typeof adminItem.assigned_to === "undefined").to.equal(true);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+

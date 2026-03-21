@@ -1,0 +1,36 @@
+info:
+  name: "23 Admin Get App"
+  type: http
+  seq: 23
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/admin/applications/get-app?id={{adminAppId}}"
+  auth:
+    type: bearer
+    token: "{{adminToken}}"
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("admin get-app returns fresh unassigned application", function() {
+          const body = res.body;
+
+          expect(res.status).to.equal(200);
+          expect(body).to.be.an("object");
+          expect(body.id).to.equal(bru.getVar("adminAppId"));
+          expect(body.title).to.equal(bru.getEnvVar("adminAppTitle"));
+          expect(body.description).to.equal(bru.getEnvVar("adminAppDescription"));
+          expect(body.status.code).to.equal("new");
+          expect(body.created_by.name).to.equal(bru.getEnvVar("userFullName"));
+          expect(Array.isArray(body.comments)).to.equal(true);
+          expect(body.comments.length).to.equal(0);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+

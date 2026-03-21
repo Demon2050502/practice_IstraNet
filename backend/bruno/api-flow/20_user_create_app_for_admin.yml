@@ -1,0 +1,53 @@
+info:
+  name: "20 User Create App For Admin"
+  type: http
+  seq: 20
+
+http:
+  method: POST
+  url: "{{baseUrl}}/applications/create-app"
+  auth:
+    type: bearer
+    token: "{{userToken}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "title": "{{adminAppTitle}}",
+        "description": "{{adminAppDescription}}",
+        "priority_code": "normal",
+        "contact_phone": "{{contactPhone}}",
+        "contact_address": "{{contactAddress}}"
+      }
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        if (res.status === 200 && res.body && typeof res.body.id === "number") {
+          bru.setVar("adminAppId", res.body.id);
+          bru.setEnvVar("adminAppId", String(res.body.id));
+        }
+    - type: tests
+      code: |-
+        test("create admin-managed app returns application", function() {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an("object");
+          expect(res.body.id).to.be.a("number");
+          expect(res.body.id).to.be.greaterThan(0);
+          expect(res.body.title).to.equal(bru.getEnvVar("adminAppTitle"));
+          expect(res.body.description).to.equal(bru.getEnvVar("adminAppDescription"));
+          expect(res.body.status.code).to.equal("new");
+          expect(res.body.priority.code).to.equal("normal");
+          expect(res.body.created_by.name).to.equal(bru.getEnvVar("userFullName"));
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+

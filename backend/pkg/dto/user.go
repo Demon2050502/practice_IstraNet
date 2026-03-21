@@ -1,32 +1,28 @@
 package dto
 
-import "errors"
-
 type SignUpRequest struct {
-    Email    string `json:"email" binding:"required,email"`
-    Password string `json:"password" binding:"required,min=6"`
-    FullName string `json:"full_name" binding:"required"`
-    Role string `json:"role"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required,min=6"`
+	FullName string `json:"full_name" binding:"required"`
+	Role     string `json:"role"`
 }
 
 type SignInRequest struct {
-    Email    string `json:"email" binding:"required,email"`
-    Password string `json:"password" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
 }
 
 type AuthUser struct {
-    Name string `json:"name"`
-    Role string `json:"role"`
+	Name string `json:"name"`
+	Role string `json:"role"`
 }
 
 type AuthResponse struct {
-    Token string   `json:"token"`
-    User  AuthUser `json:"user"`
+	Token string   `json:"token"`
+	User  AuthUser `json:"user"`
 }
 
 type ErrorResponse struct {
-    Error   string `json:"error"`
-    Message string `json:"message,omitempty"`
+	Error   string `json:"error"`
+	Message string `json:"message,omitempty"`
 }
-
-var ErrInvalidCredentials = errors.New("invalid credentials")

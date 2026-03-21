@@ -1,0 +1,32 @@
+info:
+  name: "32 Admin Get User After Role Change"
+  type: http
+  seq: 32
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/admin/users/get-user?id={{managedUserId}}"
+  auth:
+    type: bearer
+    token: "{{adminToken}}"
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("admin get-user reflects changed role", function() {
+          const body = res.body;
+
+          expect(res.status).to.equal(200);
+          expect(body).to.be.an("object");
+          expect(body.id).to.equal(bru.getVar("managedUserId"));
+          expect(body.role_code).to.equal("operator");
+          expect(body.role_name).to.be.a("string");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+

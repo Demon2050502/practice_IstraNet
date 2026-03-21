@@ -6,10 +6,7 @@ type CreateApplicationRequest struct {
 	Title       string `json:"title" binding:"required"`
 	Description string `json:"description" binding:"required"`
 
-	// Можно не передавать — тогда будет "normal"
 	PriorityCode string `json:"priority_code,omitempty"` // low|normal|high|critical
-
-	// category_id опционально
 	CategoryID *int64 `json:"category_id,omitempty"`
 
 	ContactPhone   *string `json:"contact_phone,omitempty"`

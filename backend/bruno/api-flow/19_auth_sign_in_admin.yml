@@ -1,0 +1,47 @@
+info:
+  name: "19 Auth Sign In Admin"
+  type: http
+  seq: 19
+
+http:
+  method: POST
+  url: "{{baseUrl}}/auth/sign-in"
+  auth: none
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "email": "{{adminEmail}}",
+        "password": "{{adminPassword}}"
+      }
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        if (res.status === 200 && res.body && res.body.token) {
+          bru.setVar("adminToken", res.body.token);
+          bru.setEnvVar("adminToken", res.body.token);
+        }
+    - type: tests
+      code: |-
+        test("sign-in admin returns fresh token", function() {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an("object");
+          expect(res.body.token).to.be.a("string");
+          expect(res.body.token.trim()).to.not.equal("");
+          expect(res.body.token.split(".")).to.have.length(3);
+          expect(res.body.user).to.be.an("object");
+          expect(res.body.user.name).to.equal(bru.getEnvVar("adminFullName"));
+          expect(res.body.user.role).to.equal("admin");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+

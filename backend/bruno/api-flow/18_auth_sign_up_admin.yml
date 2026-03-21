@@ -1,0 +1,75 @@
+info:
+  name: "18 Auth Sign Up Admin"
+  type: http
+  seq: 18
+
+http:
+  method: POST
+  url: "{{baseUrl}}/auth/sign-up"
+  auth: none
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "email": "{{adminEmail}}",
+        "password": "{{adminPassword}}",
+        "full_name": "{{adminFullName}}",
+        "role": "admin"
+      }
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        const runId = bru.getEnvVar("runId") || `manual-${Date.now()}`;
+        const vars = {
+          adminEmail: `${bru.getEnvVar("adminEmailPrefix") || "bruno_admin"}+${runId}@example.com`,
+          adminFullName: `${bru.getEnvVar("adminNamePrefix") || "Bruno Admin"} ${runId}`,
+          managedUserEmail: `${bru.getEnvVar("managedUserEmailPrefix") || "bruno_managed_user"}+${runId}@example.com`,
+          managedUserFullName: `${bru.getEnvVar("managedUserNamePrefix") || "Bruno Managed User"} ${runId}`,
+          adminAppTitle: `Bruno admin application ${runId}`,
+          adminAppDescription: `Admin application description ${runId}`,
+          adminStatusComment: `Admin status comment ${runId}`,
+          customStatusCode: `bruno_custom_${runId}`.toLowerCase().replace(/[^a-z0-9_]/g, "_"),
+          customStatusName: `Bruno Custom Status ${runId}`,
+          updatedCustomStatusCode: `bruno_custom_updated_${runId}`.toLowerCase().replace(/[^a-z0-9_]/g, "_"),
+          updatedCustomStatusName: `Bruno Updated Custom Status ${runId}`
+        };
+
+        Object.entries(vars).forEach(([key, value]) => {
+          bru.setVar(key, value);
+          bru.setEnvVar(key, value);
+        });
+
+        bru.setVar("adminToken", "");
+        bru.setVar("adminAppId", 0);
+        bru.setVar("managedUserId", 0);
+        bru.setVar("operatorId", 0);
+        bru.setVar("customStatusId", 0);
+        bru.setEnvVar("adminToken", "");
+        bru.setEnvVar("adminAppId", "0");
+        bru.setEnvVar("managedUserId", "0");
+        bru.setEnvVar("operatorId", "0");
+        bru.setEnvVar("customStatusId", "0");
+    - type: tests
+      code: |-
+        test("sign-up admin returns auth payload", function() {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an("object");
+          expect(res.body.token).to.be.a("string");
+          expect(res.body.token.trim()).to.not.equal("");
+          expect(res.body.token.split(".")).to.have.length(3);
+          expect(res.body.user).to.be.an("object");
+          expect(res.body.user.name).to.equal(bru.getEnvVar("adminFullName"));
+          expect(res.body.user.role).to.equal("admin");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+

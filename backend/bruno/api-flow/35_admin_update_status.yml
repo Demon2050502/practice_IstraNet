@@ -1,0 +1,45 @@
+info:
+  name: "35 Admin Update Status"
+  type: http
+  seq: 35
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/api/admin/dictionaries/change-status"
+  auth:
+    type: bearer
+    token: "{{adminToken}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "id": {{customStatusId}},
+        "code": "{{updatedCustomStatusCode}}",
+        "name": "{{updatedCustomStatusName}}",
+        "is_final": true
+      }
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("admin can update custom status", function() {
+          const body = res.body;
+
+          expect(res.status).to.equal(200);
+          expect(body).to.be.an("object");
+          expect(body.id).to.equal(bru.getVar("customStatusId"));
+          expect(body.code).to.equal(bru.getEnvVar("updatedCustomStatusCode"));
+          expect(body.name).to.equal(bru.getEnvVar("updatedCustomStatusName"));
+          expect(body.is_final).to.equal(true);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
