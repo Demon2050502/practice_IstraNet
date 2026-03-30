@@ -23,6 +23,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router.Static("/style", frontendDir+"/style")
 	router.Static("/js", frontendDir+"/js")
 	router.Static("/image", frontendDir+"/image")
+	router.Static("/components", frontendDir+"/components")
 
 	router.GET("/", func(c *gin.Context) {
 		c.File(frontendDir + "/index.html")

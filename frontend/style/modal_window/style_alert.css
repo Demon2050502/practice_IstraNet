@@ -1,0 +1,29 @@
+.alert {
+    padding: 14px 16px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-small);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.alert--info {
+    color: var(--color-text-main);
+    background: rgba(21, 48, 75, 0.08);
+    border-color: rgba(21, 48, 75, 0.12);
+}
+
+.alert--success {
+    color: var(--color-success);
+    background: var(--color-success-soft);
+    border-color: rgba(31, 143, 95, 0.2);
+}
+
+.alert--error {
+    color: var(--color-danger);
+    background: var(--color-danger-soft);
+    border-color: rgba(191, 63, 79, 0.18);
+}
+
+.is-hidden {
+    display: none !important;
+}

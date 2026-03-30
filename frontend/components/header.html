@@ -1,0 +1,49 @@
+<header class="site-header">
+    <a class="site-logo" href="/">
+        <span class="site-logo__mark">DN</span>
+        <span class="site-logo__text">DeskNet</span>
+    </a>
+
+    <button
+        class="site-header__toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-header-menu"
+        aria-label="Открыть меню"
+        data-header-toggle
+    >
+        <span class="site-header__toggle-line"></span>
+        <span class="site-header__toggle-line"></span>
+        <span class="site-header__toggle-line"></span>
+    </button>
+
+    <div class="site-header__overlay" data-header-overlay></div>
+
+    <div class="site-header__menu" id="site-header-menu" data-header-menu>
+        <div class="site-header__menu-head">
+            <p class="site-header__menu-title">Меню</p>
+
+            <button
+                class="site-header__close"
+                type="button"
+                aria-label="Закрыть меню"
+                data-header-close
+            >
+                <span class="site-header__close-line"></span>
+                <span class="site-header__close-line"></span>
+            </button>
+        </div>
+
+        <nav class="site-nav" aria-label="Главная навигация">
+            <a class="site-nav__link" href="#platform">Платформа</a>
+            <a class="site-nav__link" href="#workflow">Сценарий</a>
+            <a class="site-nav__link" href="#roles">Роли</a>
+            <a class="site-nav__link" href="#footer">Контакты</a>
+        </nav>
+
+        <div class="site-actions">
+            <a class="button button--ghost" href="/auth">Войти</a>
+            <a class="button button--primary" href="/auth">Открыть кабинет</a>
+        </div>
+    </div>
+</header>

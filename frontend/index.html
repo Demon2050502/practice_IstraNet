@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeskNet</title>
+    <link rel="stylesheet" href="./style/main_style/variables.css">
+    <link rel="stylesheet" href="./style/main_style/main.css">
+    <link rel="stylesheet" href="./style/main_style/header.css">
+    <link rel="stylesheet" href="./style/index_style.css">
+    <link rel="stylesheet" href="./style/main_style/footer.css">
+</head>
+<body>
+    <div class="page-glow page-glow--left" aria-hidden="true"></div>
+    <div class="page-glow page-glow--right" aria-hidden="true"></div>
+
+    <div class="site-shell">
+        <div data-layout-header></div>
+
+        <main class="site-main">
+            <section class="hero">
+                <div class="hero__content">
+                    <span class="hero__badge">Сервис поддержки и обработки обращений</span>
+                    <h1 class="hero__title">Helpdesk-система, в которой каждое обращение под контролем</h1>
+                    <p class="hero__text">
+                        DeskNet помогает компаниям выстраивать понятную работу с обращениями:
+                        от первого сообщения клиента до финального решения. Все заявки,
+                        статусы и история действий собраны в одном удобном пространстве.
+                    </p>
+
+                    <div class="hero__actions">
+                        <a class="button button--primary button--large" href="/auth">Перейти к авторизации</a>
+                        <a class="button button--secondary button--large" href="#platform">Посмотреть возможности</a>
+                    </div>
+
+                    <div class="hero__metrics">
+                        <article class="metric-card">
+                            <p class="metric-card__value">3</p>
+                            <p class="metric-card__label">ключевые роли в процессе</p>
+                        </article>
+
+                        <article class="metric-card">
+                            <p class="metric-card__value">24/7</p>
+                            <p class="metric-card__label">контроль обращений в одном месте</p>
+                        </article>
+
+                        <article class="metric-card">
+                            <p class="metric-card__value">100%</p>
+                            <p class="metric-card__label">прозрачность статусов и истории</p>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="hero__visual">
+                    <div class="dashboard-card dashboard-card--primary">
+                        <div class="dashboard-card__header">
+                            <span class="dashboard-card__title">Рабочий процесс</span>
+                            <span class="dashboard-card__pill">online</span>
+                        </div>
+
+                        <div class="dashboard-card__flow">
+                            <div class="flow-step flow-step--done">
+                                <span class="flow-step__dot"></span>
+                                <div>
+                                    <p class="flow-step__title">Обращение принято</p>
+                                    <p class="flow-step__text">Клиент оставил заявку и сразу видит её дальнейший путь</p>
+                                </div>
+                            </div>
+
+                            <div class="flow-step flow-step--active">
+                                <span class="flow-step__dot"></span>
+                                <div>
+                                    <p class="flow-step__title">Специалист подключился</p>
+                                    <p class="flow-step__text">Ответственный сотрудник берёт задачу в работу и обновляет статус</p>
+                                </div>
+                            </div>
+
+                            <div class="flow-step">
+                                <span class="flow-step__dot"></span>
+                                <div>
+                                    <p class="flow-step__title">Контроль качества</p>
+                                    <p class="flow-step__text">Руководитель видит загрузку команды и следит за сроками ответа</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card dashboard-card--secondary">
+                        <p class="dashboard-card__mini-title">Что даёт DeskNet</p>
+                        <ul class="dashboard-list">
+                            <li class="dashboard-list__item">Единое окно для приёма обращений</li>
+                            <li class="dashboard-list__item">Понятный маршрут от заявки до решения</li>
+                            <li class="dashboard-list__item">Распределение задач между сотрудниками</li>
+                            <li class="dashboard-list__item">Прозрачную историю действий по каждому запросу</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="platform">
+                <div class="section__intro">
+                    <p class="section__eyebrow">Платформа</p>
+                    <h2 class="section__title">DeskNet помогает выстроить понятную и аккуратную поддержку клиентов</h2>
+                    <p class="section__text">
+                        Это сайт о helpdesk-системе для команд, которым важно не просто отвечать на обращения,
+                        а управлять всем циклом поддержки: от приёма запроса до закрытия задачи и анализа качества сервиса.
+                    </p>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <p class="feature-card__number">01</p>
+                        <h3 class="feature-card__title">Единый центр обращений</h3>
+                        <p class="feature-card__text">
+                            Все запросы клиентов, сотрудников или партнёров поступают в одну систему,
+                            где их удобно принимать, распределять и отслеживать.
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <p class="feature-card__number">02</p>
+                        <h3 class="feature-card__title">Прозрачный путь заявки</h3>
+                        <p class="feature-card__text">
+                            Каждое обращение проходит понятные этапы: приём, обработка, уточнение,
+                            решение и закрытие без потери контекста.
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <p class="feature-card__number">03</p>
+                        <h3 class="feature-card__title">Удобство для команды</h3>
+                        <p class="feature-card__text">
+                            Сотрудники быстрее ориентируются в задачах, а руководитель видит текущую нагрузку
+                            и качество обработки обращений.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section section--accent" id="workflow">
+                <div class="section__intro">
+                    <p class="section__eyebrow">Сценарий</p>
+                    <h2 class="section__title">Как в DeskNet выстраивается работа с обращением</h2>
+                </div>
+
+                <div class="timeline">
+                    <article class="timeline-card">
+                        <span class="timeline-card__point">01</span>
+                        <h3 class="timeline-card__title">Авторизация</h3>
+                        <p class="timeline-card__text">
+                            Клиент или сотрудник начинает работу с обращения через личный кабинет.
+                        </p>
+                    </article>
+
+                    <article class="timeline-card">
+                        <span class="timeline-card__point">02</span>
+                        <h3 class="timeline-card__title">Создание обращения</h3>
+                        <p class="timeline-card__text">
+                            Заявка попадает в систему и сразу становится доступной для маршрутизации и контроля.
+                        </p>
+                    </article>
+
+                    <article class="timeline-card">
+                        <span class="timeline-card__point">03</span>
+                        <h3 class="timeline-card__title">Работа оператора</h3>
+                        <p class="timeline-card__text">
+                            Специалист берёт обращение, уточняет детали, меняет статусы и ведёт его до результата.
+                        </p>
+                    </article>
+
+                    <article class="timeline-card">
+                        <span class="timeline-card__point">04</span>
+                        <h3 class="timeline-card__title">Контроль и история</h3>
+                        <p class="timeline-card__text">
+                            Руководитель команды видит историю, сроки, загрузку и общую картину по сервису.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section" id="roles">
+                <div class="section__intro">
+                    <p class="section__eyebrow">Роли</p>
+                    <h2 class="section__title">У каждой роли своя задача в общем процессе поддержки</h2>
+                </div>
+
+                <div class="role-grid">
+                    <article class="role-card">
+                        <p class="role-card__tag">Клиент</p>
+                        <h3 class="role-card__title">Оставляет запрос</h3>
+                        <p class="role-card__text">
+                            Отправляет обращение, следит за статусом и получает обратную связь по решению.
+                        </p>
+                    </article>
+
+                    <article class="role-card">
+                        <p class="role-card__tag">Специалист</p>
+                        <h3 class="role-card__title">Решает задачу</h3>
+                        <p class="role-card__text">
+                            Принимает запрос в работу, общается с клиентом, обновляет статус и доводит обращение до результата.
+                        </p>
+                    </article>
+
+                    <article class="role-card">
+                        <p class="role-card__tag">Руководитель</p>
+                        <h3 class="role-card__title">Контролирует сервис</h3>
+                        <p class="role-card__text">
+                            Следит за качеством поддержки, распределением нагрузки и прозрачностью процессов внутри команды.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="cta">
+                <div class="cta__content">
+                    <p class="section__eyebrow">Старт</p>
+                    <h2 class="section__title">DeskNet создаёт спокойный и понятный опыт для всей команды</h2>
+                    <p class="cta__text">
+                        Сайт рассказывает о том, как helpdesk-система помогает принимать обращения,
+                        поддерживать порядок в запросах и выстраивать качественный сервис для клиентов.
+                    </p>
+                </div>
+
+                <a class="button button--primary button--large" href="/auth">Перейти в DeskNet</a>
+            </section>
+        </main>
+
+        <div data-layout-footer></div>
+    </div>
+
+    <script src="./js/main_js/header.js"></script>
+    <script src="./js/main_js/common.js"></script>
+</body>
+</html>

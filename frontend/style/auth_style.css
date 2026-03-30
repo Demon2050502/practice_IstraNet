@@ -1,0 +1,307 @@
+body {
+    background-color: #dfe8f1;
+    background-image:
+        linear-gradient(rgba(10, 23, 38, 0.26), rgba(10, 23, 38, 0.26)),
+        var(
+            --auth-background-image,
+            radial-gradient(circle at top left, rgba(13, 106, 173, 0.28), transparent 34%),
+            radial-gradient(circle at bottom right, rgba(31, 143, 95, 0.22), transparent 30%),
+            linear-gradient(135deg, #dfe8f1 0%, #eef4f8 100%)
+        );
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.auth-layout {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.auth-topbar {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 24px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.auth-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.auth-brand__mark {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    font-family: var(--font-family-heading);
+    font-weight: 800;
+}
+
+.auth-brand__text {
+    font-family: var(--font-family-heading);
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.auth-topbar__back {
+    padding: 10px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    text-decoration: none;
+    transition: background var(--transition-base), transform var(--transition-base);
+}
+
+.auth-topbar__back:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
+}
+
+.auth-page {
+    width: 100%;
+    display: grid;
+    place-items: center;
+    padding: 32px 16px 40px;
+}
+
+.auth-shell {
+    width: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.auth-card {
+    width: min(100%, 460px);
+    padding: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.52);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 28px 80px rgba(11, 31, 52, 0.24);
+    backdrop-filter: blur(18px);
+}
+
+.auth-card__header {
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.auth-card__eyebrow {
+    margin: 0 0 8px;
+    color: var(--color-accent);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.auth-card__title {
+    margin: 0 0 10px;
+    font-family: var(--font-family-heading);
+    font-size: 34px;
+    line-height: 1.05;
+}
+
+.auth-card__text,
+.auth-card__hint {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+.auth-card__hint {
+    margin-top: 18px;
+    font-size: 13px;
+}
+
+.auth-tabs {
+    margin-bottom: 18px;
+    padding: 4px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+    border-radius: 999px;
+    background: rgba(21, 48, 75, 0.06);
+}
+
+.auth-tab {
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 999px;
+    color: var(--color-text-muted);
+    background: transparent;
+    transition: background var(--transition-base), color var(--transition-base);
+}
+
+.auth-tab:hover {
+    color: var(--color-text-main);
+}
+
+.auth-tab--active {
+    color: var(--color-accent);
+    background: var(--color-surface-strong);
+    box-shadow: 0 8px 18px rgba(15, 108, 191, 0.08);
+}
+
+.auth-form {
+    margin-top: 18px;
+    display: grid;
+    gap: 14px;
+}
+
+.form-field {
+    display: grid;
+    gap: 8px;
+}
+
+.form-field__label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-field__input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    color: var(--color-text-main);
+    background: rgba(255, 255, 255, 0.94);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.form-field__input::placeholder {
+    color: #8ba0b5;
+}
+
+.form-field__input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px rgba(15, 108, 191, 0.14);
+}
+
+.auth-form__submit,
+.account-state__logout {
+    width: 100%;
+    padding: 14px 18px;
+    border: 0;
+    border-radius: var(--radius-small);
+    font-weight: 700;
+    transition: background var(--transition-base), transform var(--transition-base), opacity var(--transition-base);
+}
+
+.auth-form__submit {
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--color-accent), #1890d8);
+}
+
+.auth-form__submit:hover,
+.account-state__logout:hover {
+    transform: translateY(-1px);
+}
+
+.auth-form__submit:disabled,
+.account-state__logout:disabled {
+    opacity: 0.65;
+    cursor: wait;
+    transform: none;
+}
+
+.account-state {
+    margin-top: 18px;
+    padding: 20px;
+    border: 1px solid rgba(31, 143, 95, 0.18);
+    border-radius: var(--radius-medium);
+    background: linear-gradient(180deg, rgba(31, 143, 95, 0.1), rgba(255, 255, 255, 0.86));
+}
+
+.account-state__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.account-state__status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-success);
+    box-shadow: 0 0 0 6px rgba(31, 143, 95, 0.14);
+}
+
+.account-state__status-text {
+    margin: 0;
+    font-weight: 700;
+}
+
+.account-state__body {
+    margin: 18px 0;
+    display: grid;
+    gap: 12px;
+}
+
+.account-state__row {
+    padding: 14px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid rgba(183, 198, 216, 0.8);
+    border-radius: var(--radius-small);
+    background: rgba(255, 255, 255, 0.82);
+}
+
+.account-state__label {
+    color: var(--color-text-muted);
+}
+
+.account-state__value {
+    text-align: right;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.account-state__logout {
+    color: #ffffff;
+    background: linear-gradient(135deg, #113b63, #1f5e8c);
+}
+
+@media (max-width: 640px) {
+    .auth-topbar {
+        width: min(100% - 20px, 100%);
+        padding-top: 18px;
+    }
+
+    .auth-page {
+        padding: 22px 10px 28px;
+    }
+
+    .auth-card {
+        padding: 24px 20px;
+        border-radius: 24px;
+    }
+
+    .auth-card__title {
+        font-size: 30px;
+    }
+
+    .account-state__row {
+        flex-direction: column;
+    }
+
+    .account-state__value {
+        text-align: left;
+    }
+}

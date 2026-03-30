@@ -1,0 +1,35 @@
+:root {
+    --font-family-base: "Bahnschrift", "Trebuchet MS", "Segoe UI", sans-serif;
+    --font-family-heading: "Bahnschrift", "Segoe UI Semibold", "Trebuchet MS", sans-serif;
+    --color-page-bg: #edf3f8;
+    --color-surface: rgba(255, 255, 255, 0.92);
+    --color-surface-strong: #ffffff;
+    --color-border: #d6e0ea;
+    --color-border-strong: #aebfd0;
+    --color-text-main: #17324a;
+    --color-text-muted: #5b6e81;
+    --color-accent: #0d6aad;
+    --color-accent-hover: #0a588f;
+    --color-accent-soft: rgba(13, 106, 173, 0.12);
+    --color-accent-deep: #10385c;
+    --color-success: #1f8f5f;
+    --color-success-soft: rgba(31, 143, 95, 0.12);
+    --color-danger: #bf3f4f;
+    --color-danger-soft: rgba(191, 63, 79, 0.12);
+    --color-shadow: rgba(17, 45, 78, 0.14);
+    --color-shadow-strong: rgba(15, 41, 71, 0.22);
+    --radius-large: 28px;
+    --radius-medium: 18px;
+    --radius-small: 12px;
+    --space-2xs: 4px;
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    --shadow-card: 0 24px 60px var(--color-shadow);
+    --shadow-soft: 0 16px 36px rgba(21, 50, 74, 0.08);
+    --transition-base: 0.25s ease;
+    --transition-slow: 0.5s ease;
+}
