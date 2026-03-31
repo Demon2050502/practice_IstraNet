@@ -1,0 +1,173 @@
+.workspace-grid--admin-applications {
+    grid-template-columns: 1fr;
+}
+
+.workspace-grid--admin-users {
+    grid-template-columns: 1fr;
+}
+
+.workspace-grid--admin-statuses {
+    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+}
+
+.admin-table-card {
+    display: grid;
+    gap: 16px;
+}
+
+.admin-table-wrap {
+    overflow-x: auto;
+    border: 1px solid rgba(183, 198, 216, 0.72);
+    border-radius: var(--radius-medium);
+    background: rgba(255, 255, 255, 0.84);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 720px;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 16px 18px;
+    text-align: left;
+    border-bottom: 1px solid rgba(183, 198, 216, 0.54);
+    vertical-align: middle;
+}
+
+.admin-table th {
+    color: var(--color-text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: rgba(244, 248, 252, 0.9);
+}
+
+.admin-table tbody tr {
+    transition: background var(--transition-base);
+}
+
+.admin-table tbody tr:hover {
+    background: rgba(13, 106, 173, 0.05);
+}
+
+.admin-table tbody tr.is-active {
+    background: rgba(13, 106, 173, 0.08);
+}
+
+.admin-table__button {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    background: transparent;
+    text-align: left;
+}
+
+.admin-table__title {
+    display: block;
+    font-family: var(--font-family-heading);
+    font-size: 18px;
+    line-height: 1.2;
+}
+
+.admin-table__meta {
+    display: block;
+    margin-top: 6px;
+    color: var(--color-text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.admin-table__muted {
+    color: var(--color-text-muted);
+}
+
+.admin-table__empty {
+    text-align: center;
+}
+
+.admin-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.admin-pagination__info {
+    color: var(--color-text-muted);
+    font-size: 14px;
+}
+
+.details-block--history {
+    align-content: start;
+}
+
+.timeline-list--history {
+    max-height: 560px;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.timeline-list--history .timeline-card {
+    position: relative;
+    padding-left: 22px;
+}
+
+.timeline-list--history .timeline-card::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 18px;
+    bottom: 18px;
+    width: 2px;
+    border-radius: 999px;
+    background: rgba(13, 106, 173, 0.18);
+}
+
+.timeline-list--history .timeline-card::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 24px;
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(13, 106, 173, 0.3);
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+.admin-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.admin-check input {
+    width: 18px;
+    height: 18px;
+}
+
+@media (max-width: 1200px) {
+    .workspace-grid--admin-applications,
+    .workspace-grid--admin-users,
+    .workspace-grid--admin-statuses {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .admin-pagination {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-pagination .button {
+        width: 100%;
+        justify-content: center;
+    }
+}

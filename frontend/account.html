@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет | DeskNet</title>
+    <link rel="stylesheet" href="./style/main_style/variables.css">
+    <link rel="stylesheet" href="./style/main_style/main.css">
+    <link rel="stylesheet" href="./style/modal_window/style_alert.css">
+    <link rel="stylesheet" href="./style/main_style/workspace.css">
+    <link rel="stylesheet" href="./style/account_style.css">
+</head>
+<body>
+    <div class="workspace-shell">
+        <header class="workspace-topbar">
+            <a class="workspace-brand" href="/">
+                <span class="workspace-brand__mark">DN</span>
+                <span class="workspace-brand__text">DeskNet</span>
+            </a>
+
+            <nav class="workspace-nav" aria-label="Навигация кабинета">
+                <a class="workspace-nav__link workspace-nav__link--active" href="/account">Мои заявки</a>
+                <a class="workspace-nav__link" href="/create-application">Создать заявку</a>
+            </nav>
+
+            <div class="workspace-userbar">
+                <div class="workspace-userbox">
+                    <span class="workspace-userbox__label">Пользователь</span>
+                    <span class="workspace-userbox__value" id="workspace-user-name">-</span>
+                </div>
+
+                <button class="workspace-logout" id="logout-button" type="button">Выйти</button>
+            </div>
+        </header>
+
+        <main class="workspace-main">
+            <section class="workspace-hero">
+                <div>
+                    <p class="workspace-hero__eyebrow">Личный кабинет</p>
+                    <h1 class="workspace-hero__title">Управляйте своими заявками в одном окне</h1>
+                    <p class="workspace-hero__text">
+                        Здесь можно посмотреть все обращения, открыть детали, отредактировать описание,
+                        добавить комментарий и создать новую заявку.
+                    </p>
+                </div>
+
+                <a class="button button--primary" href="/create-application">Создать новую заявку</a>
+            </section>
+
+            <section class="stats-grid">
+                <article class="stat-card">
+                    <span class="stat-card__label">Всего заявок</span>
+                    <strong class="stat-card__value" id="stat-total">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">Активные</span>
+                    <strong class="stat-card__value" id="stat-active">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">Решённые</span>
+                    <strong class="stat-card__value" id="stat-resolved">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">Закрытые</span>
+                    <strong class="stat-card__value" id="stat-closed">0</strong>
+                </article>
+            </section>
+
+            <div class="workspace-grid workspace-grid--account">
+                <section class="panel">
+                    <div class="panel__header">
+                        <div>
+                            <p class="panel__eyebrow">Список</p>
+                            <h2 class="panel__title">Мои обращения</h2>
+                        </div>
+                    </div>
+
+                    <div class="alert is-hidden" id="list-message" role="status" aria-live="polite"></div>
+
+                    <div class="application-list" id="application-list"></div>
+                </section>
+
+                <section class="panel">
+                    <div class="panel__header">
+                        <div>
+                            <p class="panel__eyebrow">Детали</p>
+                            <h2 class="panel__title">Карточка заявки</h2>
+                        </div>
+                    </div>
+
+                    <div class="empty-state" id="application-placeholder">
+                        Выберите заявку из списка, чтобы посмотреть детали и управлять обращением.
+                    </div>
+
+                    <div class="details-view is-hidden" id="application-details">
+                        <div class="details-view__head">
+                            <div>
+                                <h3 class="details-view__title" id="detail-title">-</h3>
+                                <p class="details-view__text" id="detail-description">-</p>
+                            </div>
+
+                            <div class="details-badges">
+                                <span class="badge" id="detail-status">-</span>
+                                <span class="badge badge--soft" id="detail-priority">-</span>
+                            </div>
+                        </div>
+
+                        <div class="meta-grid">
+                            <div class="meta-item">
+                                <span class="meta-item__label">Дата создания</span>
+                                <span class="meta-item__value" id="detail-created-at">-</span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-item__label">Последнее обновление</span>
+                                <span class="meta-item__value" id="detail-updated-at">-</span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-item__label">Ответственный</span>
+                                <span class="meta-item__value" id="detail-assigned-to">Не назначен</span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-item__label">Категория</span>
+                                <span class="meta-item__value" id="detail-category">Не указана</span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-item__label">Телефон</span>
+                                <span class="meta-item__value" id="detail-phone">Не указан</span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-item__label">Адрес</span>
+                                <span class="meta-item__value" id="detail-address">Не указан</span>
+                            </div>
+                        </div>
+
+                        <div class="details-block">
+                            <h4 class="details-block__title">Обновить заявку</h4>
+
+                            <div class="alert is-hidden" id="detail-message" role="status" aria-live="polite"></div>
+
+                            <form class="details-form" id="application-form">
+                                <div class="form-field">
+                                    <label class="form-field__label" for="application-title">Тема</label>
+                                    <input class="form-field__input" id="application-title" type="text" required>
+                                </div>
+
+                                <div class="form-field">
+                                    <label class="form-field__label" for="application-description">Описание</label>
+                                    <textarea class="form-field__textarea" id="application-description" rows="6" required></textarea>
+                                </div>
+
+                                <div class="form-field">
+                                    <label class="form-field__label" for="application-comment">Комментарий</label>
+                                    <textarea class="form-field__textarea" id="application-comment" rows="4" placeholder="Добавьте уточнение, если это нужно"></textarea>
+                                </div>
+
+                                <div class="details-actions">
+                                    <button class="button button--primary" id="save-button" type="submit">Сохранить изменения</button>
+                                    <button class="button button--ghost" id="delete-button" type="button">Удалить заявку</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="details-block">
+                            <h4 class="details-block__title">Комментарии</h4>
+                            <div class="timeline-list" id="comments-list"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="./js/session.js"></script>
+    <script src="./js/account.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+.workspace-grid--operator {
+    grid-template-columns: minmax(340px, 420px) minmax(0, 1fr);
+}
+
+@media (max-width: 1200px) {
+    .workspace-grid--operator {
+        grid-template-columns: 1fr;
+    }
+}

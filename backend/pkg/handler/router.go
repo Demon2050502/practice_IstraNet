@@ -41,6 +41,38 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		c.File(frontendDir + "/auth.html")
 	})
 
+	router.GET("/account", func(c *gin.Context) {
+		c.File(frontendDir + "/account.html")
+	})
+
+	router.GET("/account.html", func(c *gin.Context) {
+		c.File(frontendDir + "/account.html")
+	})
+
+	router.GET("/create-application", func(c *gin.Context) {
+		c.File(frontendDir + "/create_application.html")
+	})
+
+	router.GET("/create-application.html", func(c *gin.Context) {
+		c.File(frontendDir + "/create_application.html")
+	})
+
+	router.GET("/operator", func(c *gin.Context) {
+		c.File(frontendDir + "/operator.html")
+	})
+
+	router.GET("/operator.html", func(c *gin.Context) {
+		c.File(frontendDir + "/operator.html")
+	})
+
+	router.GET("/admin", func(c *gin.Context) {
+		c.File(frontendDir + "/admin.html")
+	})
+
+	router.GET("/admin.html", func(c *gin.Context) {
+		c.File(frontendDir + "/admin.html")
+	})
+
 	auth := router.Group("/auth")
 	{
 		auth.POST("/sign-up", h.SignUp)
@@ -92,14 +124,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		adminDictionaries.DELETE("/delete-status", h.AdminDeleteStatus)
 	}
 
-	test := router.Group("/test")
-	{
-		test.POST("/status", response)
-	}
-
 	return router
 }
 
-func response(c *gin.Context) {
-	c.JSON(200, gin.H{"ok": true})
-}

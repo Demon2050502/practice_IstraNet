@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кабинет оператора | DeskNet</title>
+    <link rel="stylesheet" href="./style/main_style/variables.css">
+    <link rel="stylesheet" href="./style/main_style/main.css">
+    <link rel="stylesheet" href="./style/modal_window/style_alert.css">
+    <link rel="stylesheet" href="./style/main_style/workspace.css">
+    <link rel="stylesheet" href="./style/operator_style.css">
+</head>
+<body>
+    <div class="workspace-shell">
+        <header class="workspace-topbar">
+            <a class="workspace-brand" href="/">
+                <span class="workspace-brand__mark">DN</span>
+                <span class="workspace-brand__text">DeskNet</span>
+            </a>
+
+            <nav class="workspace-nav" aria-label="Навигация оператора">
+                <a class="workspace-nav__link workspace-nav__link--active" href="/operator">Рабочий кабинет</a>
+            </nav>
+
+            <div class="workspace-userbar">
+                <div class="workspace-userbox">
+                    <span class="workspace-userbox__label">Оператор</span>
+                    <span class="workspace-userbox__value" id="workspace-user-name">-</span>
+                </div>
+
+                <button class="workspace-logout" id="logout-button" type="button">Выйти</button>
+            </div>
+        </header>
+
+        <main class="workspace-main">
+            <section class="workspace-hero">
+                <div>
+                    <p class="workspace-hero__eyebrow">Рабочая зона</p>
+                    <h1 class="workspace-hero__title">Принимайте заявки, меняйте статусы и закрывайте обращения</h1>
+                    <p class="workspace-hero__text">
+                        В кабинете оператора доступны общий список обращений, карточка заявки,
+                        история действий и быстрые действия по статусам.
+                    </p>
+                </div>
+            </section>
+
+            <section class="stats-grid">
+                <article class="stat-card">
+                    <span class="stat-card__label">Всего</span>
+                    <strong class="stat-card__value" id="stat-total">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">Новые</span>
+                    <strong class="stat-card__value" id="stat-new">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">В работе</span>
+                    <strong class="stat-card__value" id="stat-progress">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">Ожидание</span>
+                    <strong class="stat-card__value" id="stat-waiting">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">Решены</span>
+                    <strong class="stat-card__value" id="stat-resolved">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">Без исполнителя</span>
+                    <strong class="stat-card__value" id="stat-unassigned">0</strong>
+                </article>
+            </section>
+
+            <div class="workspace-grid workspace-grid--operator">
+                <section class="panel">
+                    <div class="panel__header">
+                        <div>
+                            <p class="panel__eyebrow">Очередь</p>
+                            <h2 class="panel__title">Все заявки</h2>
+                        </div>
+                    </div>
+
+                    <div class="filter-bar" id="filter-bar">
+                        <button class="filter-chip filter-chip--active" type="button" data-filter="all">Все</button>
+                        <button class="filter-chip" type="button" data-filter="new">Новые</button>
+                        <button class="filter-chip" type="button" data-filter="my">Мои</button>
+                        <button class="filter-chip" type="button" data-filter="waiting">Ожидание</button>
+                        <button class="filter-chip" type="button" data-filter="resolved">Решены</button>
+                    </div>
+
+                    <div class="form-field form-field--compact">
+                        <label class="form-field__label" for="search-input">Поиск по заявкам</label>
+                        <input class="form-field__input" id="search-input" type="search" placeholder="Введите тему или имя автора">
+                    </div>
+
+                    <div class="alert is-hidden" id="list-message" role="status" aria-live="polite"></div>
+
+                    <div class="application-list" id="application-list"></div>
+                </section>
+
+                <section class="panel">
+                    <div class="panel__header">
+                        <div>
+                            <p class="panel__eyebrow">Работа с заявкой</p>
+                            <h2 class="panel__title">Карточка обращения</h2>
+                        </div>
+                    </div>
+
+                    <div class="empty-state" id="application-placeholder">
+                        Выберите заявку из списка слева, чтобы увидеть детали, комментарии и историю.
+                    </div>
+
+                    <div class="details-view is-hidden" id="application-details">
+                        <div class="details-view__head">
+                            <div>
+                                <h3 class="details-view__title" id="detail-title">-</h3>
+                                <p class="details-view__text" id="detail-description">-</p>
+                            </div>
+
+                            <div class="details-badges">
+                                <span class="badge" id="detail-status">-</span>
+                                <span class="badge badge--soft" id="detail-priority">-</span>
+                            </div>
+                        </div>
+
+                        <div class="meta-grid">
+                            <div class="meta-item">
+                                <span class="meta-item__label">Автор</span>
+                                <span class="meta-item__value" id="detail-created-by">-</span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-item__label">Исполнитель</span>
+                                <span class="meta-item__value" id="detail-assigned-to">Не назначен</span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-item__label">Создана</span>
+                                <span class="meta-item__value" id="detail-created-at">-</span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-item__label">Обновлена</span>
+                                <span class="meta-item__value" id="detail-updated-at">-</span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-item__label">Телефон</span>
+                                <span class="meta-item__value" id="detail-phone">Не указан</span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-item__label">Адрес</span>
+                                <span class="meta-item__value" id="detail-address">Не указан</span>
+                            </div>
+                        </div>
+
+                        <div class="details-block">
+                            <h4 class="details-block__title">Действия</h4>
+
+                            <div class="alert is-hidden" id="detail-message" role="status" aria-live="polite"></div>
+
+                            <div class="form-field">
+                                <label class="form-field__label" for="action-comment">Комментарий оператора</label>
+                                <textarea class="form-field__textarea" id="action-comment" rows="4" placeholder="Комментарий можно добавить при смене статуса или закрытии заявки"></textarea>
+                            </div>
+
+                            <div class="details-actions details-actions--wrap" id="operator-actions"></div>
+                        </div>
+
+                        <div class="details-columns">
+                            <div class="details-block">
+                                <h4 class="details-block__title">Комментарии</h4>
+                                <div class="timeline-list" id="comments-list"></div>
+                            </div>
+
+                            <div class="details-block">
+                                <h4 class="details-block__title">История</h4>
+                                <div class="timeline-list" id="history-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="./js/session.js"></script>
+    <script src="./js/operator.js"></script>
+</body>
+</html>

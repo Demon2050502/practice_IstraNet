@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание заявки | DeskNet</title>
+    <link rel="stylesheet" href="./style/main_style/variables.css">
+    <link rel="stylesheet" href="./style/main_style/main.css">
+    <link rel="stylesheet" href="./style/modal_window/style_alert.css">
+    <link rel="stylesheet" href="./style/main_style/workspace.css">
+    <link rel="stylesheet" href="./style/create_application_style.css">
+</head>
+<body>
+    <div class="workspace-shell">
+        <header class="workspace-topbar">
+            <a class="workspace-brand" href="/">
+                <span class="workspace-brand__mark">DN</span>
+                <span class="workspace-brand__text">DeskNet</span>
+            </a>
+
+            <nav class="workspace-nav" aria-label="Навигация кабинета">
+                <a class="workspace-nav__link" href="/account">Мои заявки</a>
+                <a class="workspace-nav__link workspace-nav__link--active" href="/create-application">Создать заявку</a>
+            </nav>
+
+            <div class="workspace-userbar">
+                <div class="workspace-userbox">
+                    <span class="workspace-userbox__label">Пользователь</span>
+                    <span class="workspace-userbox__value" id="workspace-user-name">-</span>
+                </div>
+
+                <button class="workspace-logout" id="logout-button" type="button">Выйти</button>
+            </div>
+        </header>
+
+        <main class="workspace-main">
+            <section class="workspace-hero">
+                <div>
+                    <p class="workspace-hero__eyebrow">Новая заявка</p>
+                    <h1 class="workspace-hero__title">Опишите задачу и отправьте обращение в работу</h1>
+                    <p class="workspace-hero__text">
+                        Чем точнее будет тема и описание, тем быстрее специалист возьмёт заявку
+                        и сможет дать решение.
+                    </p>
+                </div>
+
+                <a class="button button--secondary" href="/account">Вернуться в кабинет</a>
+            </section>
+
+            <div class="workspace-grid workspace-grid--create">
+                <section class="panel">
+                    <div class="panel__header">
+                        <div>
+                            <p class="panel__eyebrow">Форма</p>
+                            <h2 class="panel__title">Создание заявки</h2>
+                        </div>
+                    </div>
+
+                    <div class="alert is-hidden" id="form-message" role="status" aria-live="polite"></div>
+
+                    <form class="details-form" id="create-application-form">
+                        <div class="form-field">
+                            <label class="form-field__label" for="title">Тема обращения</label>
+                            <input class="form-field__input" id="title" type="text" placeholder="Например: Не работает доступ в личный кабинет" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-field__label" for="description">Описание</label>
+                            <textarea class="form-field__textarea" id="description" rows="7" placeholder="Опишите проблему подробно" required></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label class="form-field__label" for="priority">Приоритет</label>
+                                <select class="form-field__select" id="priority">
+                                    <option value="normal">Обычный</option>
+                                    <option value="low">Низкий</option>
+                                    <option value="high">Высокий</option>
+                                    <option value="critical">Критический</option>
+                                </select>
+                            </div>
+
+                            <div class="form-field">
+                                <label class="form-field__label" for="contact-phone">Телефон</label>
+                                <input class="form-field__input" id="contact-phone" type="tel" placeholder="+7 (999) 000-00-00">
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-field__label" for="contact-address">Адрес или место</label>
+                            <input class="form-field__input" id="contact-address" type="text" placeholder="Укажите адрес или кабинет, если это важно">
+                        </div>
+
+                        <div class="details-actions">
+                            <button class="button button--primary" id="submit-button" type="submit">Отправить заявку</button>
+                            <a class="button button--ghost" href="/account">Отменить</a>
+                        </div>
+                    </form>
+                </section>
+
+                <aside class="panel tips-panel">
+                    <div class="panel__header">
+                        <div>
+                            <p class="panel__eyebrow">Подсказка</p>
+                            <h2 class="panel__title">Как заполнить заявку лучше</h2>
+                        </div>
+                    </div>
+
+                    <div class="tips-list">
+                        <article class="tip-card">
+                            <h3 class="tip-card__title">Понятная тема</h3>
+                            <p class="tip-card__text">Коротко назовите проблему, чтобы оператор быстрее понял суть обращения.</p>
+                        </article>
+
+                        <article class="tip-card">
+                            <h3 class="tip-card__title">Подробное описание</h3>
+                            <p class="tip-card__text">Укажите, когда появилась проблема, что уже пробовали и какой нужен результат.</p>
+                        </article>
+
+                        <article class="tip-card">
+                            <h3 class="tip-card__title">Контакты</h3>
+                            <p class="tip-card__text">Если задача связана с местом или требует связи, оставьте телефон и адрес.</p>
+                        </article>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <script src="./js/session.js"></script>
+    <script src="./js/create_application.js"></script>
+</body>
+</html>

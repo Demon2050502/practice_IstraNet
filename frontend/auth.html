@@ -55,6 +55,15 @@
                             >
                         </div>
 
+                        <div class="form-field is-hidden" id="role-field">
+                            <label class="form-field__label" for="role">Роль</label>
+                            <select class="form-field__select" id="role" name="role">
+                                <option value="user">Пользователь</option>
+                                <option value="operator">Оператор</option>
+                                <option value="admin">Администратор</option>
+                            </select>
+                        </div>
+
                         <div class="form-field">
                             <label class="form-field__label" for="email">Email</label>
                             <input
@@ -104,6 +113,8 @@
                             </div>
                         </div>
 
+                        <a class="account-state__open" id="account-home-link" href="/">Перейти в кабинет</a>
+
                         <button class="account-state__logout" id="logout-button" type="button">
                             Выйти
                         </button>
@@ -113,6 +124,7 @@
         </main>
     </div>
 
-    <script src="./js/main_js/main.js"></script>
+    <script src="./js/session.js"></script>
+    <script src="./js/main.js"></script>
 </body>
 </html>

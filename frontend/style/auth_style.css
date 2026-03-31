@@ -173,7 +173,8 @@ body {
     font-weight: 600;
 }
 
-.form-field__input {
+.form-field__input,
+.form-field__select {
     width: 100%;
     padding: 14px 16px;
     border: 1px solid var(--color-border);
@@ -187,19 +188,27 @@ body {
     color: #8ba0b5;
 }
 
-.form-field__input:focus {
+.form-field__select {
+    appearance: none;
+}
+
+.form-field__input:focus,
+.form-field__select:focus {
     outline: none;
     border-color: var(--color-accent);
     box-shadow: 0 0 0 4px rgba(15, 108, 191, 0.14);
 }
 
 .auth-form__submit,
+.account-state__open,
 .account-state__logout {
     width: 100%;
     padding: 14px 18px;
     border: 0;
     border-radius: var(--radius-small);
     font-weight: 700;
+    text-align: center;
+    text-decoration: none;
     transition: background var(--transition-base), transform var(--transition-base), opacity var(--transition-base);
 }
 
@@ -209,6 +218,7 @@ body {
 }
 
 .auth-form__submit:hover,
+.account-state__open:hover,
 .account-state__logout:hover {
     transform: translateY(-1px);
 }
@@ -271,6 +281,16 @@ body {
     text-align: right;
     font-weight: 700;
     word-break: break-word;
+}
+
+.account-state__open {
+    margin-bottom: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-main);
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(183, 198, 216, 0.8);
 }
 
 .account-state__logout {

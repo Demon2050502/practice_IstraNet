@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора | DeskNet</title>
+    <link rel="stylesheet" href="./style/main_style/variables.css">
+    <link rel="stylesheet" href="./style/main_style/main.css">
+    <link rel="stylesheet" href="./style/modal_window/style_alert.css">
+    <link rel="stylesheet" href="./style/main_style/workspace.css">
+    <link rel="stylesheet" href="./style/admin_style.css">
+</head>
+<body>
+    <div class="workspace-shell">
+        <header class="workspace-topbar">
+            <a class="workspace-brand" href="/">
+                <span class="workspace-brand__mark">DN</span>
+                <span class="workspace-brand__text">DeskNet</span>
+            </a>
+
+            <nav class="workspace-nav" aria-label="Навигация администратора">
+                <a class="workspace-nav__link workspace-nav__link--active" href="/admin">Панель администратора</a>
+            </nav>
+
+            <div class="workspace-userbar">
+                <div class="workspace-userbox">
+                    <span class="workspace-userbox__label">Администратор</span>
+                    <span class="workspace-userbox__value" id="workspace-user-name">-</span>
+                </div>
+
+                <button class="workspace-logout" id="logout-button" type="button">Выйти</button>
+            </div>
+        </header>
+
+        <main class="workspace-main">
+            <section class="workspace-hero">
+                <div>
+                    <p class="workspace-hero__eyebrow">Управление сервисом</p>
+                    <h1 class="workspace-hero__title">Контролируйте заявки, пользователей и статусы в одном кабинете</h1>
+                    <p class="workspace-hero__text">
+                        В панели администратора доступны общая очередь заявок, назначение операторов,
+                        изменение ролей пользователей и управление справочником статусов.
+                    </p>
+                </div>
+            </section>
+
+            <section class="stats-grid">
+                <article class="stat-card">
+                    <span class="stat-card__label">Пользователей</span>
+                    <strong class="stat-card__value" id="stat-users">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">Операторов</span>
+                    <strong class="stat-card__value" id="stat-operators">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">Администраторов</span>
+                    <strong class="stat-card__value" id="stat-admins">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">Заявок</span>
+                    <strong class="stat-card__value" id="stat-applications">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">Новых</span>
+                    <strong class="stat-card__value" id="stat-new">0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-card__label">Финальных</span>
+                    <strong class="stat-card__value" id="stat-final">0</strong>
+                </article>
+            </section>
+
+            <section class="panel">
+                <div class="panel__header">
+                    <div>
+                        <p class="panel__eyebrow">Заявки</p>
+                        <h2 class="panel__title">Управление обращениями</h2>
+                    </div>
+                </div>
+
+                <div class="filter-bar" id="application-filter-bar">
+                    <button class="filter-chip filter-chip--active" type="button" data-filter="all">Все</button>
+                    <button class="filter-chip" type="button" data-filter="new">Новые</button>
+                    <button class="filter-chip" type="button" data-filter="unassigned">Без оператора</button>
+                    <button class="filter-chip" type="button" data-filter="final">Финальные</button>
+                </div>
+
+                <div class="form-field form-field--compact">
+                    <label class="form-field__label" for="application-search">Поиск по заявкам</label>
+                    <input class="form-field__input" id="application-search" type="search" placeholder="Введите тему или имя автора">
+                </div>
+
+                <div class="alert is-hidden" id="application-list-message" role="status" aria-live="polite"></div>
+
+                <div class="workspace-grid workspace-grid--admin-applications">
+                    <div class="admin-table-card">
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Тема</th>
+                                        <th>Автор</th>
+                                        <th>Исполнитель</th>
+                                        <th>Статус</th>
+                                        <th>Обновлена</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="application-list"></tbody>
+                            </table>
+                        </div>
+
+                        <div class="admin-pagination" id="application-pagination">
+                            <button class="button button--ghost" id="application-page-prev" type="button">Назад</button>
+                            <span class="admin-pagination__info" id="application-page-info">Страница 1 из 1</span>
+                            <button class="button button--ghost" id="application-page-next" type="button">Вперёд</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="empty-state" id="application-placeholder">
+                            Выберите заявку из списка, чтобы посмотреть детали и выполнить действия администратора.
+                        </div>
+
+                        <div class="details-view is-hidden" id="application-details">
+                            <div class="details-view__head">
+                                <div>
+                                    <h3 class="details-view__title" id="application-title">-</h3>
+                                    <p class="details-view__text" id="application-description">-</p>
+                                </div>
+
+                                <div class="details-badges">
+                                    <span class="badge" id="application-status">-</span>
+                                    <span class="badge badge--soft" id="application-priority">-</span>
+                                </div>
+                            </div>
+
+                            <div class="meta-grid">
+                                <div class="meta-item">
+                                    <span class="meta-item__label">Автор</span>
+                                    <span class="meta-item__value" id="application-created-by">-</span>
+                                </div>
+
+                                <div class="meta-item">
+                                    <span class="meta-item__label">Исполнитель</span>
+                                    <span class="meta-item__value" id="application-assigned-to">Не назначен</span>
+                                </div>
+
+                                <div class="meta-item">
+                                    <span class="meta-item__label">Создана</span>
+                                    <span class="meta-item__value" id="application-created-at">-</span>
+                                </div>
+
+                                <div class="meta-item">
+                                    <span class="meta-item__label">Обновлена</span>
+                                    <span class="meta-item__value" id="application-updated-at">-</span>
+                                </div>
+
+                                <div class="meta-item">
+                                    <span class="meta-item__label">Телефон</span>
+                                    <span class="meta-item__value" id="application-phone">Не указан</span>
+                                </div>
+
+                                <div class="meta-item">
+                                    <span class="meta-item__label">Адрес</span>
+                                    <span class="meta-item__value" id="application-address">Не указан</span>
+                                </div>
+                            </div>
+
+                            <div class="details-block">
+                                <h4 class="details-block__title">Действия администратора</h4>
+
+                                <div class="alert is-hidden" id="application-detail-message" role="status" aria-live="polite"></div>
+
+                                <div class="form-row">
+                                    <div class="form-field">
+                                        <label class="form-field__label" for="assign-operator">Назначить оператора</label>
+                                        <select class="form-field__select" id="assign-operator"></select>
+                                    </div>
+
+                                    <div class="form-field">
+                                        <label class="form-field__label" for="application-status-select">Изменить статус</label>
+                                        <select class="form-field__select" id="application-status-select"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-field">
+                                    <label class="form-field__label" for="application-action-comment">Комментарий</label>
+                                    <textarea class="form-field__textarea" id="application-action-comment" rows="4" placeholder="Комментарий к изменению статуса или назначению"></textarea>
+                                </div>
+
+                                <div class="details-actions details-actions--wrap">
+                                    <button class="button button--primary" id="assign-button" type="button">Назначить</button>
+                                    <button class="button button--secondary" id="change-status-button" type="button">Сменить статус</button>
+                                    <button class="button button--ghost" id="delete-application-button" type="button">Удалить заявку</button>
+                                </div>
+                            </div>
+
+                            <div class="details-block details-block--history">
+                                <h4 class="details-block__title">История</h4>
+
+                                <div class="form-field">
+                                    <label class="form-field__label" for="history-search">Поиск по истории</label>
+                                    <input
+                                        class="form-field__input"
+                                        id="history-search"
+                                        type="search"
+                                        placeholder="Введите действие, автора или текст"
+                                    >
+                                </div>
+
+                                <div class="timeline-list timeline-list--history" id="application-history"></div>
+                            </div>
+
+                            <div class="details-block">
+                                <h4 class="details-block__title">Комментарии</h4>
+                                <div class="timeline-list" id="application-comments"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="panel__header">
+                    <div>
+                        <p class="panel__eyebrow">Пользователи</p>
+                        <h2 class="panel__title">Управление ролями и аккаунтами</h2>
+                    </div>
+                </div>
+
+                <div class="form-field form-field--compact">
+                    <label class="form-field__label" for="user-search">Поиск по пользователям</label>
+                    <input class="form-field__input" id="user-search" type="search" placeholder="Введите имя или email">
+                </div>
+
+                <div class="alert is-hidden" id="user-list-message" role="status" aria-live="polite"></div>
+
+                <div class="workspace-grid workspace-grid--admin-users">
+                    <div class="admin-table-card">
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Имя</th>
+                                        <th>Email</th>
+                                        <th>Роль</th>
+                                        <th>Статус</th>
+                                        <th>Создан</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="user-list"></tbody>
+                            </table>
+                        </div>
+
+                        <div class="admin-pagination" id="user-pagination">
+                            <button class="button button--ghost" id="user-page-prev" type="button">Назад</button>
+                            <span class="admin-pagination__info" id="user-page-info">Страница 1 из 1</span>
+                            <button class="button button--ghost" id="user-page-next" type="button">Вперёд</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="empty-state" id="user-placeholder">
+                            Выберите пользователя, чтобы изменить роль или удалить аккаунт.
+                        </div>
+
+                        <div class="details-view is-hidden" id="user-details">
+                            <div class="details-view__head">
+                                <div>
+                                    <h3 class="details-view__title" id="user-name">-</h3>
+                                    <p class="details-view__text" id="user-email">-</p>
+                                </div>
+
+                                <div class="details-badges">
+                                    <span class="badge" id="user-role-badge">-</span>
+                                    <span class="badge badge--soft" id="user-active-badge">-</span>
+                                </div>
+                            </div>
+
+                            <div class="meta-grid">
+                                <div class="meta-item">
+                                    <span class="meta-item__label">ID</span>
+                                    <span class="meta-item__value" id="user-id">-</span>
+                                </div>
+
+                                <div class="meta-item">
+                                    <span class="meta-item__label">Дата регистрации</span>
+                                    <span class="meta-item__value" id="user-created-at">-</span>
+                                </div>
+
+                                <div class="meta-item">
+                                    <span class="meta-item__label">Текущая роль</span>
+                                    <span class="meta-item__value" id="user-role-name">-</span>
+                                </div>
+                            </div>
+
+                            <div class="details-block">
+                                <h4 class="details-block__title">Действия с пользователем</h4>
+
+                                <div class="alert is-hidden" id="user-detail-message" role="status" aria-live="polite"></div>
+
+                                <div class="form-field">
+                                    <label class="form-field__label" for="user-role-select">Новая роль</label>
+                                    <select class="form-field__select" id="user-role-select">
+                                        <option value="user">Пользователь</option>
+                                        <option value="operator">Оператор</option>
+                                        <option value="admin">Администратор</option>
+                                    </select>
+                                </div>
+
+                                <div class="details-actions details-actions--wrap">
+                                    <button class="button button--primary" id="change-role-button" type="button">Изменить роль</button>
+                                    <button class="button button--ghost" id="delete-user-button" type="button">Удалить пользователя</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="panel__header">
+                    <div>
+                        <p class="panel__eyebrow">Статусы</p>
+                        <h2 class="panel__title">Управление справочником статусов</h2>
+                    </div>
+                </div>
+
+                <div class="alert is-hidden" id="status-message" role="status" aria-live="polite"></div>
+
+                <div class="workspace-grid workspace-grid--admin-statuses">
+                    <div class="application-list" id="status-list"></div>
+
+                    <div class="details-block">
+                        <h4 class="details-block__title">Форма статуса</h4>
+
+                        <div class="form-field">
+                            <label class="form-field__label" for="status-code">Code</label>
+                            <input class="form-field__input" id="status-code" type="text" placeholder="Например: review">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-field__label" for="status-name">Название</label>
+                            <input class="form-field__input" id="status-name" type="text" placeholder="Например: На проверке">
+                        </div>
+
+                        <label class="admin-check">
+                            <input id="status-final" type="checkbox">
+                            <span>Финальный статус</span>
+                        </label>
+
+                        <div class="details-actions details-actions--wrap">
+                            <button class="button button--primary" id="create-status-button" type="button">Создать</button>
+                            <button class="button button--secondary" id="update-status-button" type="button">Сохранить изменения</button>
+                            <button class="button button--ghost" id="delete-status-button" type="button">Удалить</button>
+                            <button class="button button--ghost" id="reset-status-button" type="button">Очистить форму</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="./js/session.js"></script>
+    <script src="./js/admin.js"></script>
+</body>
+</html>
